@@ -1,0 +1,73 @@
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+  pager = true
+[color "status"]
+  added = green
+  changed = blue
+  untracked = red
+[color "diff"]
+  meta = yellow
+  old = red
+  new = green
+[log]
+  # Better date formats in logs
+  date = rfc
+[alias]
+	po = push -u origin HEAD
+	lg = !git --no-pager log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	subup = submodule update --init --recursive
+  # Show number of commits from all authors.
+  stats = shortlog -sn --all --no-merges
+  # Show detailed logs
+  graph = log --graph --decorate --stat --date=iso --all
+  # See everything everyone has done recently
+  overview = log --oneline --no-merges
+  # See everything I have done recently
+  remind = log --oneline --no-merges --author=victor.tolbert@gmail.com
+  # Show very last commit
+  last = log --oneline -1
+  # Show our last tag
+  last-tag = describe --abbrev=0 --tags
+  # See the timestamp of a given commit
+  when = show -s --format=%ci
+  # See today’s work
+  today = log --since=\"00:00:00\" --all --no-merges --oneline --author=csswizardry@gmail.com
+  # See only which files have changed in a git show, not the whole diff
+  files = show --pretty=\"\" --name-only
+  # Empty line between results from different files.
+  find = "!git grep --break -C1"
+  # Show your ten most recently checked out branches
+  recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+  # Compare commits in one branch against another, e.g. $ git compare tkt-0021 to develop
+  compare = "!f() { git log --oneline $1..$2;  }; f"
+  # See which commits are on your local branch that aren’t on the remote
+  local = "! git log --oneline --no-merges origin/$(git rev-parse --abbrev-ref HEAD).."
+  # See which commits are on the remote that aren’t on your local branch
+  upstream = "! git fetch && git log --oneline --no-merges ..origin/$(git rev-parse --abbrev-ref HEAD)"
+  # Nicer diffs for prose
+  wdiff = diff --word-diff
+  # Make it possible to diff minified code (eww…)
+  mindiff = diff -w --word-diff-regex=. --color-words -U0
+  root = rev-parse --show-toplevel
+[status]
+	submoduleSummary = true
+[diff]
+	submodule = log
+# [help]
+#   autocorrect = 1
+[credential]
+	helper = cache --timeout=600
+[core]
+	autocrlf = input
+[init]
+    templatedir = ~/.git_template
+	defaultBranch = main

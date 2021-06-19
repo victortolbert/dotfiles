@@ -1,0 +1,6 @@
+alias ta='php artisan'
+alias td='doing'
+alias ty='yarn'
+alias tn='npm'
+alias tg='git'
+# alias code='code-insiders'
