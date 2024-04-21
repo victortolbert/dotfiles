@@ -1,8 +1,11 @@
+[user]
+  name = Victor Tolbert
+  email = victor.tolbert@gmail.com
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
 [color]
   diff = auto
   status = auto
@@ -22,9 +25,9 @@
   # Better date formats in logs
   date = rfc
 [alias]
-	po = push -u origin HEAD
-	lg = !git --no-pager log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	subup = submodule update --init --recursive
+  po = push -u origin HEAD
+  lg = !git --no-pager log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  subup = submodule update --init --recursive
   # Show number of commits from all authors.
   stats = shortlog -sn --all --no-merges
   # Show detailed logs
@@ -59,15 +62,31 @@
   mindiff = diff -w --word-diff-regex=. --color-words -U0
   root = rev-parse --show-toplevel
 [status]
-	submoduleSummary = true
+  submoduleSummary = true
 [diff]
-	submodule = log
+  submodule = log
 # [help]
 #   autocorrect = 1
 [credential]
-	helper = cache --timeout=600
+  helper = osxkeychain
+  helper =
+  helper =
+  helper = /usr/local/share/gcm-core/git-credential-manager
 [core]
-	autocrlf = input
+  autocrlf = input
+  excludesfile = /Users/vtolbert/.gitignore_global
+[difftool "sourcetree"]
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path =
+[mergetool "sourcetree"]
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [init]
     templatedir = ~/.git_template
-	defaultBranch = main
+  defaultBranch = main
+[pull]
+  rebase = false
+[credential "https://dev.azure.com"]
+  useHttpPath = true
+[credential "https://git.heroku.com"]
+  provider = generic
