@@ -73,7 +73,7 @@
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [core]
   autocrlf = input
-  excludesfile = /Users/vtolbert/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [difftool "sourcetree"]
   cmd = opendiff \"$LOCAL\" \"$REMOTE\"
   path =

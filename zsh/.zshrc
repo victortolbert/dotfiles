@@ -112,7 +112,7 @@ export PATH=$HOME/.composer/vendor/bin:$PATH
 export PATH=$HOME/.dotnet/tools:$PATH
 
 # pnpm
-export PNPM_HOME="/Users/vtolbert/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -125,27 +125,27 @@ export NVM_DIR="$HOME/.nvm"
 
 
 # Herd injected PHP binary.
-export PATH="/Users/vtolbert/Library/Application Support/Herd/bin/":$PATH
+export PATH="$HOME/Library/Application Support/Herd/bin/":$PATH
 
 
 # Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/82/"
+export HERD_PHP_82_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/82/"
 
 
 # Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/83/"
+export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
 
 
 # Herd injected PHP 8.1 configuration.
-export HERD_PHP_81_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/81/"
+export HERD_PHP_81_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/81/"
 
 
 # Herd injected PHP 7.4 configuration.
-export HERD_PHP_74_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/74/"
+export HERD_PHP_74_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/74/"
 
 
 # Herd injected PHP 8.0 configuration.
-export HERD_PHP_80_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/80/"
+export HERD_PHP_80_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/80/"
 
 # fzf — fuzzy finder
 eval "$(fzf --zsh)"
@@ -160,21 +160,21 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
 
 
 # Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/84/"
+export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
 
 
 export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
 
 # Added by Windsurf
-export PATH="/Users/vtolbert/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
 
 # Herd injected PHP 8.5 configuration.
-export HERD_PHP_85_INI_SCAN_DIR="/Users/vtolbert/Library/Application Support/Herd/config/php/85/"
+export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
 export PATH="$HOME/.local/bin:$PATH"
 
 # OpenClaw Completion
-source "/Users/vtolbert/.openclaw/completions/openclaw.zsh"
+source "$HOME/.openclaw/completions/openclaw.zsh"
 
 
 # ElevenLabs TTS (sag)
@@ -183,7 +183,7 @@ export OPENAI_API_KEY=$(op read "op://OpenClaw/OpenAI/credential" 2>/dev/null)
 export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 
 # bun completions
-[ -s "/Users/vtolbert/.bun/_bun" ] && source "/Users/vtolbert/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
