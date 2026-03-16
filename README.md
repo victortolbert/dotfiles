@@ -11,12 +11,34 @@ Vic's terminal and dev environment configuration.
 | Path | Purpose |
 |------|---------|
 | `ghostty/config` | Ghostty terminal (Cobalt2, JetBrains Mono, splits, visor) |
-| `zsh/.zshrc` | Main ZSH config (oh-my-zsh, fzf, paths) |
-| `zsh/custom/` | ZSH aliases, env, themes |
+| `zsh/.zshrc` | Main ZSH config (oh-my-zsh, fzf, paths, sources .zsh_aliases) |
+| `zsh/.zsh_aliases` | 497-line consolidated aliases & functions (navigation, git, npm/pnpm/bun, docker, AEM, python/uv, helpers) |
+| `zsh/custom/themes/cobalt2.zsh-theme` | Oh-My-ZSH Cobalt2 theme |
 | `git/.gitconfig` | Git aliases, colors, config |
-| `vscode/` | VS Code settings, keybindings, extensions |
-| `Brewfile` | Homebrew formulae + casks |
-| `install.sh` | Symlink installer |
+| `vscode/` | VS Code settings, keybindings |
+| `Brewfile` | Homebrew formulae + casks (253 from milton) |
+| `install.sh` | Symlink installer (backs up existing files) |
+
+### File structure
+```
+dotfiles/
+├── Brewfile
+├── README.md
+├── install.sh
+├── ghostty/
+│   └── config
+├── git/
+│   └── .gitconfig
+├── vscode/
+│   ├── settings.json
+│   └── keybindings.json
+└── zsh/
+    ├── .zshrc              ← sources ~/.zsh_aliases
+    ├── .zsh_aliases        ← 497 lines of aliases & functions
+    └── custom/
+        └── themes/
+            └── cobalt2.zsh-theme
+```
 
 ## Install
 
