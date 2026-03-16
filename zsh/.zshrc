@@ -176,7 +176,7 @@ export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/p
 export PATH="$HOME/.local/bin:$PATH"
 
 # OpenClaw Completion
-source "$HOME/.openclaw/completions/openclaw.zsh"
+[[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
 
 # ElevenLabs TTS (sag)
