@@ -201,3 +201,7 @@ export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Java (OpenJDK 11 via Homebrew)
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@11"
