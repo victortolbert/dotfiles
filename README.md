@@ -58,6 +58,19 @@ No API keys in this repo. Secrets are managed via 1Password CLI:
 export OPENAI_API_KEY=$(op read "op://OpenClaw/OpenAI/credential")
 ```
 
+### Machine-specific config (`~/.zshrc.local`)
+
+The `.zshrc` sources `~/.zshrc.local` at the end if it exists. Use this file for
+machine-specific secrets and config that shouldn't be in the repo.
+
+Create it on each machine:
+
+```bash
+# ~/.zshrc.local — not tracked in git
+export OP_SERVICE_ACCOUNT_TOKEN="ops_..."   # needed for `op read` calls
+# Add any other machine-specific overrides here
+```
+
 ## Brew restore
 
 ```bash

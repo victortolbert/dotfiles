@@ -83,6 +83,10 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# Machine-specific overrides (secrets, tokens, local-only config)
+# Loaded early so OP_SERVICE_ACCOUNT_TOKEN is available for `op read` calls below
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -179,9 +183,16 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
 
-# ElevenLabs TTS (sag)
-export ELEVENLABS_API_KEY=$(op read "op://OpenClaw/ElevenLabs/credential" 2>/dev/null)
-export OPENAI_API_KEY=$(op read "op://OpenClaw/OpenAI/credential" 2>/dev/null)
+# 1Password secrets — only auto-fetch on milton (headless, has service account token)
+# On peter, use `load-secrets` alias to fetch on-demand via Touch ID
+if [[ "$(hostname -s)" == "milton" ]]; then
+  export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password" 2>/dev/null)
+  export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password" 2>/dev/null)
+  export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password" 2>/dev/null)
+else
+  alias load-secrets='export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password") && export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password") && export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password") && echo "✅ Secrets loaded via 1Password"'
+fi
+
 export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 
 # bun completions
@@ -190,4 +201,3 @@ export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export NOTION_API_KEY=$(op read "op://OpenClaw/Notion/credential" 2>/dev/null)

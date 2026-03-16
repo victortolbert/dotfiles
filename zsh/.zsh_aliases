@@ -31,7 +31,7 @@ alias .....='cd ../../../..'
 
 alias proj='cd ~/Projects'
 alias herd='cd ~/Herd'
-alias aem='cd ~/Projects/aem/author'
+alias aem='cd ~/aem/author'
 alias kb='cd ~/Projects/kb'
 alias exemplar='cd ~/Projects/exemplar.core'
 alias livewire='cd ~/Herd/livewire-catalog'
@@ -195,7 +195,6 @@ git-changelog() {
 # pnpm
 alias p='pnpm'
 alias i='pnpm install'
-# alias pi='pnpm install'
 alias d='pnpm dev'
 alias pd='pnpm dev'
 alias b='pnpm build'
@@ -247,11 +246,25 @@ ivyui() {
 }
 
 # AEM instance management
-alias aem-start='cd ~/Projects/aem/author && java -Xms2g -Xmx4g -jar aem65-author-p4502.jar -gui'
-alias aem-stop='kill $(lsof -t -i :4502) 2>/dev/null || echo "AEM not running"'
-alias aem-status='lsof -i :4502 || echo "Port 4502 is free"'
-alias aem-logs='tail -f ~/Projects/aem/author/crx-quickstart/logs/error.log'
-alias aem-errors='grep -i "error\|exception" ~/Projects/aem/author/crx-quickstart/logs/error.log | tail -50'
+alias aem-start='cd ~/aem/author && java \
+  -server -Xms2g -Xmx6g -XX:+UseG1GC \
+  -Djava.awt.headless=true \
+  -Djava.locale.providers=CLDR,JRE,SPI \
+  -Dsling.run.modes=author,crx3,crx3tar \
+  -Dsling.properties=conf/sling.properties \
+  -Doak.segment.msync=true \
+  --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
+  --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
+  --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
+  --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
+  --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
+  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+  -jar aem65-author-p4502.jar -p 4502 -nointeractive'
+alias aem-stop='curl -u admin:admin -X POST "http://localhost:4502/system/console/configMgr/org.apache.sling.launcher.system.SlingMainServlet" -d "apply=true" -d "action=stop"'
+alias aem-status='ps -ef | grep aem65-author-p4502.jar | grep -v grep'
+alias aem-log='tail -f ~/aem/author/crx-quickstart/logs/error.log'
+alias aem-errors='grep -i "error\|exception" ~/aem/author/crx-quickstart/logs/error.log | tail -50'
 
 # AEM project archetype (interactive)
 alias aem-new='mvn archetype:generate \
@@ -366,6 +379,7 @@ killport() {
 alias psjava='ps aux | grep java'
 alias psg='ps aux | grep'
 alias pg='pgrep -lf'
+alias wtf3000="lsof -i tcp:3000"
 
 # ===========================================
 # macOS Utilities
@@ -445,53 +459,3 @@ alias uvr='uv run -p .venv'
 alias uvt='uv run -p ~/.codex/venvs/tools'
 
 
-alias wtf3000="lsof -i tcp:3000"
-
-# --- AEM 6.5 Author Aliases ---
-
-# # 1. Start: Launches AEM with Java 11 flags and 4GB RAM
-# alias aem-start='java -Xmx4096m -XX:MaxMetaspaceSize=512m \
-#   --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
-#   --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
-#   --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
-#   --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
-#   --add-opens=java.base/java.lang=ALL-UNNAMED \
-#   --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
-#   -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
-#   -jar ~/aem/author/aem65-author-p4502.jar'
-
-# Start: Switches to directory, triggers jenv (Java 11), and boots AEM with non-interactive mode
-#alias aem-start='cd ~/aem/author && java -Xmx4096m -XX:MaxMetaspaceSize=512m \
-#  --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
-#  --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
-#  --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
-#  --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
-#  --add-opens=java.base/java.lang=ALL-UNNAMED \
-#  --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
-#  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
-#  -jar aem65-author-p4502.jar -nointeractive'
-
-alias aem-start='cd ~/aem/author && java \
-  -server -Xms2g -Xmx6g -XX:+UseG1GC \
-  -Djava.awt.headless=true \
-  -Djava.locale.providers=CLDR,JRE,SPI \
-  -Dsling.run.modes=author,crx3,crx3tar \
-  -Dsling.properties=conf/sling.properties \
-  -Doak.segment.msync=true \
-  --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
-  --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
-  --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
-  --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
-  --add-opens=java.base/java.lang=ALL-UNNAMED \
-  --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
-  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
-  -jar aem65-author-p4502.jar -p 4502 -nointeractive'
-
-# 2. Tail Log: Follows the error log from any directory
-alias aem-log='tail -f ~/aem/author/crx-quickstart/logs/error.log'
-
-# 3. Stop: Sends a graceful shutdown signal via the Sling Servlet
-# alias aem-stop='curl -u admin:admin -X POST http://localhost:4502/system/console/configMgr/org.apache.sling.launcher.system.SlingMainServlet?apply=true&action=stop'
-alias aem-stop='curl -u admin:admin -X POST "http://localhost:4502/system/console/configMgr/org.apache.sling.launcher.system.SlingMainServlet" -d "apply=true" -d "action=stop"'
-# 4. Status: Quick check to see if the Java process is actually running
-alias aem-status='ps -ef | grep aem65-author-p4502.jar | grep -v grep'
