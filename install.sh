@@ -44,6 +44,7 @@ echo ""
 
 # ZSH
 link "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+link "$DOTFILES_DIR/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 
 # Ghostty
 link "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"

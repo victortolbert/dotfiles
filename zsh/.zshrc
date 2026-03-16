@@ -106,6 +106,8 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
+# Load consolidated aliases & functions
+[ -f "$HOME/.zsh_aliases" ] && source "$HOME/.zsh_aliases"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH=$HOME/.composer/vendor/bin:$PATH
