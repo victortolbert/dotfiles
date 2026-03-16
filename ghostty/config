@@ -1,0 +1,91 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║  Ghostty — Vic's Configuration                              ║
+# ║  Theme: Cobalt2 | Font: JetBrains Mono | tmux-ready         ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# ─── Theme ────────────────────────────────────────────────────
+theme = Cobalt2
+
+# ─── Font ─────────────────────────────────────────────────────
+font-family = "JetBrains Mono"
+font-family = "Symbols Nerd Font Mono"
+font-size = 14
+font-thicken = true
+font-feature = calt
+font-feature = liga
+
+# ─── Window & Appearance ─────────────────────────────────────
+background-opacity = 0.95
+unfocused-split-opacity = 0.85
+window-padding-x = 8
+window-padding-y = 4
+window-decoration = auto
+window-theme = ghostty
+macos-titlebar-style = tabs
+macos-window-shadow = true
+
+# ─── Quick Terminal (visor mode like iTerm) ──────────────────
+# Cmd+` toggles a drop-down terminal — your iTerm visor equivalent
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-screen = main
+quick-terminal-animation-duration = 0.15
+
+# ─── Cursor ──────────────────────────────────────────────────
+cursor-style = bar
+cursor-style-blink = true
+cursor-opacity = 0.85
+
+# ─── Mouse ───────────────────────────────────────────────────
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+click-repeat-interval = 300
+
+# ─── Clipboard ───────────────────────────────────────────────
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = true
+
+# ─── Scrollback ──────────────────────────────────────────────
+scrollback-limit = 25000
+
+# ─── Shell Integration ───────────────────────────────────────
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# ─── Keybindings ─────────────────────────────────────────────
+# Splits
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+shift+enter=toggle_split_zoom
+
+# Navigate splits
+keybind = cmd+alt+left=goto_split:left
+keybind = cmd+alt+right=goto_split:right
+keybind = cmd+alt+up=goto_split:top
+keybind = cmd+alt+down=goto_split:bottom
+
+# Tabs
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface
+keybind = cmd+shift+left=previous_tab
+keybind = cmd+shift+right=next_tab
+
+# Font size
+keybind = cmd+equal=increase_font_size:1
+keybind = cmd+minus=decrease_font_size:1
+keybind = cmd+0=reset_font_size
+
+# Quick actions
+keybind = cmd+k=clear_screen
+keybind = cmd+shift+c=copy_to_clipboard
+keybind = cmd+shift+v=paste_from_clipboard
+# cmd+f for search is built-in by default, no need to rebind
+keybind = cmd+shift+comma=open_config
+
+# ─── Selection ───────────────────────────────────────────────
+selection-clear-on-typing = true
+
+# ─── Misc ────────────────────────────────────────────────────
+confirm-close-surface = true
+auto-update = check
