@@ -33,12 +33,22 @@ dotfiles/
 │   ├── settings.json
 │   └── keybindings.json
 └── zsh/
-    ├── .zshrc              ← sources ~/.zsh_aliases
+    ├── .zshenv             ← sourced by ALL zsh (machine-aware 1Password config)
+    ├── .zshrc              ← sources ~/.zsh_aliases + machine-aware op read
     ├── .zsh_aliases        ← 497 lines of aliases & functions
     └── custom/
         └── themes/
             └── cobalt2.zsh-theme
 ```
+
+### Machine behavior
+
+| | Milton (server) | Peter (laptop) |
+|---|---|---|
+| **1Password** | Service account, no Touch ID | Desktop app + Touch ID |
+| **API keys** | Auto-loaded at shell startup | `load-secrets` alias on demand |
+| **`.zshrc.local`** | Has `OP_SERVICE_ACCOUNT_TOKEN` | Doesn't exist (not needed) |
+| **`.zshenv`** | Sets `OP_BIOMETRIC_UNLOCK_ENABLED=false` | Skips (hostname check) |
 
 ## Install
 

@@ -43,6 +43,7 @@ echo "Backup: $BACKUP_DIR (if needed)"
 echo ""
 
 # ZSH
+link "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
 link "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link "$DOTFILES_DIR/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 
