@@ -1,0 +1,497 @@
+# ===========================================
+# Consolidated Aliases & Functions
+# ===========================================
+# Source this from .zshrc: source ~/.zsh_aliases
+# Edit with: ea (alias below)
+
+# ===========================================
+# Shell Settings
+# ===========================================
+export SHELL='/bin/zsh'
+setopt hist_ignore_all_dups inc_append_history
+HISTSIZE=4096
+SAVEHIST=4096
+
+# Editor configuration
+if command -v code-insiders >/dev/null 2>&1; then
+  export EDITOR="code-insiders"
+elif command -v code >/dev/null 2>&1; then
+  export EDITOR="code"
+fi
+export ESLINT_EDITOR="code-insiders"
+export REACT_EDITOR="code-insiders"
+
+# ===========================================
+# Navigation
+# ===========================================
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+alias proj='cd ~/Projects'
+alias herd='cd ~/Herd'
+alias aem='cd ~/Projects/aem/author'
+alias kb='cd ~/Projects/kb'
+alias exemplar='cd ~/Projects/exemplar.core'
+alias livewire='cd ~/Herd/livewire-catalog'
+alias uxlab='cd ~/Projects/uxlab'
+
+# cd into frontmost Finder window
+cdf() {
+  cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')"
+}
+
+# ===========================================
+# File Operations (with safety prompts)
+# ===========================================
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias mkdir='mkdir -pv'
+
+# Listing
+alias ll='ls -ltr'
+alias la='ls -A'
+alias lll='ls -la'
+
+# Finder
+alias f='open -a Finder'
+alias o='open .'
+
+# Tree views
+alias tree3='tree -L 3'
+
+t() {
+  tree -I '.git|node_modules|bower_components|.DS_Store' --dirsfirst --filelimit 26 -L ${1:-3} -aC $2
+}
+
+dir() {
+  tree -I '.git|node_modules|bower_components|.DS_Store' --dirsfirst --filelimit 90 -L ${1:-3} -aC $2
+}
+
+# ===========================================
+# Editors
+# ===========================================
+alias c='code-insiders'
+alias ci='code-insiders'
+alias c.='code-insiders .'
+alias ws='windsurf .'
+alias slime='subl'
+
+# Quick config editing
+alias ea='code-insiders ~/.zsh_aliases'
+alias ez='code-insiders ~/.zshrc'
+
+# ===========================================
+# Git
+# ===========================================
+alias g='git'
+alias gs='git status -sb'
+alias ga='git add .'
+alias gc='git commit -m'
+alias gp='git push'
+alias gpu='git push -u origin'
+alias gpl='git pull'
+alias gf='git fetch'
+alias gco='git checkout'
+alias gb='git branch'
+alias grv='git remote -v'
+alias glog='git log --oneline -10'
+alias glog3='git log --oneline -3'
+
+# Undo everything (careful!)
+alias nah='git reset --hard && git clean -df'
+
+# Quick commits
+alias wip="git add . && git commit -m 'wip'"
+alias init="git init && git add . && git commit -m '✨ Initial commit'"
+
+# Multi-repo helpers (for titan-common style projects)
+gitpull() {
+  if [ -d titan-common ]; then
+    cd titan-common
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    git pull origin $1
+    cd ..
+  fi
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git pull origin $1
+}
+
+gitpush() {
+  if [ -d titan-common ]; then
+    cd titan-common
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    git push -u origin HEAD
+    cd ..
+  fi
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git push -u origin HEAD
+}
+
+gitadd() {
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git add . --all
+  if [ -d titan-common ]; then
+    cd titan-common
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    git add . --all
+    cd ..
+  fi
+}
+
+gitstash() {
+  if [ -d titan-common ]; then
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    cd titan-common
+    git stash $1
+    cd ..
+  fi
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git stash $1
+}
+
+gitstatus() {
+  if [ -d titan-common ]; then
+    cd titan-common
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    git status
+    cd ..
+  fi
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git status
+}
+
+gitmerge() {
+  if [ -d titan-common ]; then
+    cd titan-common
+    echo -e "\e[0;32m${PWD##*/}\e[0m"
+    git merge $1
+    cd ..
+  fi
+  echo -e "\e[0;32m${PWD##*/}\e[0m"
+  git merge $1
+}
+
+# Git changelog generator
+git-changelog() {
+  local base=${1:-$(git merge-base origin/main HEAD)}
+  echo "## Changelog"
+  echo
+  echo "### ✨ Features"
+  git log --no-merges --pretty=format:"- %s" "$base"..HEAD | grep -i "feat" || echo "None"
+  echo
+  echo "### 🐛 Fixes"
+  git log --no-merges --pretty=format:"- %s" "$base"..HEAD | grep -i "fix" || echo "None"
+  echo
+  echo "### 📚 Documentation"
+  git log --no-merges --pretty=format:"- %s" "$base"..HEAD | grep -i "docs" || echo "None"
+}
+
+# ===========================================
+# Package Managers
+# ===========================================
+# pnpm
+alias p='pnpm'
+alias i='pnpm install'
+# alias pi='pnpm install'
+alias d='pnpm dev'
+alias pd='pnpm dev'
+alias b='pnpm build'
+alias pb='pnpm build'
+alias pt='pnpm test'
+alias l='pnpm lint'
+alias pl='pnpm lint'
+alias lf='pnpm lint:fix'
+alias plf='pnpm lint:fix'
+alias tc='pnpm typecheck'
+alias ptc='pnpm typecheck'
+alias pab='pnpm approve-builds'
+alias itc='pnpm i && pnpm typecheck'
+
+# bun
+alias bi='bun install'
+alias bd='bun dev'
+alias br='bun run'
+alias bl='bun lint'
+alias blf='bun lint:fix'
+alias btc='bun typecheck'
+alias bt='bun run test'
+
+# npm
+alias ni='npm install'
+alias nid='npm install -D'
+
+# Nuxt clean rebuilds (very common workflow)
+alias fresh='rm -rf .nuxt .data node_modules pnpm-lock.yaml && pnpm install'
+alias nuxt-reset='rm -rf .nuxt .data .output pnpm-lock.yaml && bun install'
+alias nuxt-dev='rm -rf .nuxt .data .output pnpm-lock.yaml && bun install && bun dev'
+alias nuxt-lint='rm -rf .nuxt .data .output pnpm-lock.yaml && bun install && bun lint'
+alias nuxt-test='rm -rf .nuxt .data .output pnpm-lock.yaml && bun install && bun run test'
+alias nuxt-check='rm -rf .nuxt .data .output pnpm-lock.yaml && bun install && bun typecheck'
+
+# ===========================================
+# Java / AEM
+# ===========================================
+alias java11='export JAVA_HOME=$(/usr/libexec/java_home -v 11)'
+alias java17='export JAVA_HOME=$(/usr/libexec/java_home -v 17)'
+alias jv='java -version'
+
+# AEM UI Build (PHP dev server — root at ~/Projects/ivy so /admp-ivy/... paths resolve via symlink)
+ivyui() {
+  local url="http://localhost:8080/admp-ivy/common-elements-aem-parent/ui.apps/src/main/content/jcr_root/apps/common-elements/admp-ui.php"
+  echo "Ivy UI: $url"
+  open "$url"
+  php -S localhost:8080 -t ~/Projects
+}
+
+# AEM instance management
+alias aem-start='cd ~/Projects/aem/author && java -Xms2g -Xmx4g -jar aem65-author-p4502.jar -gui'
+alias aem-stop='kill $(lsof -t -i :4502) 2>/dev/null || echo "AEM not running"'
+alias aem-status='lsof -i :4502 || echo "Port 4502 is free"'
+alias aem-logs='tail -f ~/Projects/aem/author/crx-quickstart/logs/error.log'
+alias aem-errors='grep -i "error\|exception" ~/Projects/aem/author/crx-quickstart/logs/error.log | tail -50'
+
+# AEM project archetype (interactive)
+alias aem-new='mvn archetype:generate \
+  -DarchetypeGroupId=com.adobe.aem \
+  -DarchetypeArtifactId=aem-project-archetype \
+  -DarchetypeVersion=37 \
+  -DaemVersion=6.5.0'
+
+# Full AEM project creation
+aem-create() {
+  local name=${1:-myproject}
+  local group=${2:-com.mycompany}
+  local title=${3:-"My Project"}
+
+  mvn archetype:generate \
+    -DarchetypeGroupId=com.adobe.aem \
+    -DarchetypeArtifactId=aem-project-archetype \
+    -DarchetypeVersion=37 \
+    -DaemVersion=6.5.0 \
+    -DgroupId="$group" \
+    -DartifactId="$name" \
+    -Dversion=1.0.0-SNAPSHOT \
+    -Dpackage="$group.$name" \
+    -DappsFolderName="$name" \
+    -DcontentFolderName="$name" \
+    -DcssId="$name" \
+    -DcomponentGroupName="$title" \
+    -DartifactName="$title" \
+    -DappTitle="$title"
+}
+
+# AEM React SPA project
+aem-create-spa() {
+  local name=${1:-myaemreact}
+  local group=${2:-com.mycompany}
+  local title=${3:-"My AEM React Project"}
+
+  mvn archetype:generate \
+    -DarchetypeGroupId=com.adobe.aem \
+    -DarchetypeArtifactId=aem-project-archetype \
+    -DarchetypeVersion=37 \
+    -DaemVersion=6.5.14 \
+    -DgroupId="$group" \
+    -DartifactId="$name" \
+    -Dversion=1.0.0-SNAPSHOT \
+    -DappTitle="$title" \
+    -DappId="$name" \
+    -DoptionSPA=y \
+    -DfrontendModule=react \
+    -DincludeExamples=n
+}
+
+# ===========================================
+# Laravel / PHP
+# ===========================================
+alias a='php artisan'
+alias art='php artisan'
+alias artc='php artisan cache:clear'
+alias artv='php artisan view:clear'
+alias arts='php artisan serve'
+alias artclearall='php artisan cache:clear && php artisan view:clear && php artisan config:clear'
+alias mfs='php artisan migrate:fresh --seed'
+alias lnew='laravel new'
+
+alias pu='vendor/bin/phpunit'
+alias clearlog='truncate -s 0 $PWD/storage/logs/laravel.log'
+alias clearlogs='truncate -s 0 $PWD/storage/logs/*.log'
+
+# ===========================================
+# Claude CLI
+# ===========================================
+alias cl='claude'
+alias cli='claude /init'
+alias cld='claude doctor'
+alias clm='claude mcp list'
+alias clh='claude --help'
+alias cldanger='claude --dangerously-skip-permissions'
+
+# ===========================================
+# shadcn UI
+# ===========================================
+alias shadcn='pnpm dlx shadcn@latest'
+alias shadcn-add='pnpm dlx shadcn@latest add'
+alias shadcn-mcp='pnpm dlx shadcn@latest mcp init'
+
+shadcn-lyra() {
+  pnpm dlx shadcn@latest create \
+    --preset "https://ui.shadcn.com/init?base=radix&style=lyra&baseColor=gray&theme=blue&iconLibrary=phosphor&font=jetbrains-mono&menuAccent=subtle&menuColor=default&radius=none&template=vite" \
+    --template vite
+}
+
+# ===========================================
+# Networking & System
+# ===========================================
+alias ping='ping -c 5'
+alias ip='ifconfig -a | grep -o "inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)" | awk "{ sub(/inet6? (addr:)? ?/, \"\"); print }"'
+alias ip_intern='ipconfig getifaddr en0'
+alias ip_extern='curl ipecho.net/plain; echo'
+alias reloaddns='dscacheutil -flushcache && sudo killall -HUP mDNSResponder'
+alias ports='lsof -i -P -n | grep LISTEN'
+alias whois='whois -h whois-servers.net'
+alias weather='curl -4 http://wttr.in'
+alias HEAD='curl -I'
+
+killport() {
+  kill $(lsof -t -i :$1) 2>/dev/null || echo "Port $1 not in use"
+}
+
+# ===========================================
+# Process Management
+# ===========================================
+alias psjava='ps aux | grep java'
+alias psg='ps aux | grep'
+alias pg='pgrep -lf'
+
+# ===========================================
+# macOS Utilities
+# ===========================================
+# Toggle dark mode
+tdm() {
+  osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to not dark mode'
+}
+
+# Hide/show desktop icons (for presentations)
+alias hidedesktop='defaults write com.apple.finder CreateDesktop -bool false && killall Finder'
+alias showdesktop='defaults write com.apple.finder CreateDesktop -bool true && killall Finder'
+
+# Update everything
+alias update='brew update; brew upgrade; brew cleanup; npm update npm -g; npm update -g; sudo gem update --system; sudo gem update'
+
+muppd() {
+  echo -e "\033[100;44m"
+  sudo softwareupdate -ia
+  brew update
+  echo -e "\033[0m"
+}
+
+# ===========================================
+# Utilities & Fun
+# ===========================================
+alias cls='clear'
+alias sudo='sudo '
+alias grep='grep -n --color'
+alias please='sudo $(fc -ln -1)'
+
+# SSH key to clipboard
+alias sshkey='cat ~/.ssh/id_rsa.pub | pbcopy && echo "Copied to clipboard."'
+
+# Shrug to clipboard ¯\_(ツ)_/¯
+alias shrug="echo '¯\_(ツ)_/¯' | pbcopy && echo 'Copied to clipboard.'"
+
+# History
+alias h='history -50'
+alias hg='history | grep'
+
+# Debug Node/Jest
+alias debug='node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand --watch'
+
+# ESLint (local)
+alias eslint='node_modules/.bin/eslint'
+
+# Browser Sync
+alias bsa='browser-sync start --files "**" --server --no-notify'
+alias bsap='browser-sync start --proxy "local-dashboard.boosterthon.com" --files "**" --no-notify'
+
+# ===========================================
+# Helper Functions
+# ===========================================
+
+# Create and cd into directory
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Quick project init with git
+proj-init() {
+  git init
+  touch CLAUDE.md README.md
+  echo "# $(basename $(pwd))" > README.md
+  git add .
+  git commit -m "Initial scaffolding"
+}
+
+# SSH to Vagrant
+alias vm='ssh vagrant@127.0.0.1 -p 2222'
+
+# ===========================================
+# Python / UV
+# ===========================================
+alias uvr='uv run -p .venv'
+alias uvt='uv run -p ~/.codex/venvs/tools'
+
+
+alias wtf3000="lsof -i tcp:3000"
+
+# --- AEM 6.5 Author Aliases ---
+
+# # 1. Start: Launches AEM with Java 11 flags and 4GB RAM
+# alias aem-start='java -Xmx4096m -XX:MaxMetaspaceSize=512m \
+#   --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
+#   --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
+#   --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
+#   --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
+#   --add-opens=java.base/java.lang=ALL-UNNAMED \
+#   --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
+#   -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+#   -jar ~/aem/author/aem65-author-p4502.jar'
+
+# Start: Switches to directory, triggers jenv (Java 11), and boots AEM with non-interactive mode
+#alias aem-start='cd ~/aem/author && java -Xmx4096m -XX:MaxMetaspaceSize=512m \
+#  --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
+#  --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
+#  --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
+#  --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
+#  --add-opens=java.base/java.lang=ALL-UNNAMED \
+#  --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
+#  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+#  -jar aem65-author-p4502.jar -nointeractive'
+
+alias aem-start='cd ~/aem/author && java \
+  -server -Xms2g -Xmx6g -XX:+UseG1GC \
+  -Djava.awt.headless=true \
+  -Djava.locale.providers=CLDR,JRE,SPI \
+  -Dsling.run.modes=author,crx3,crx3tar \
+  -Dsling.properties=conf/sling.properties \
+  -Doak.segment.msync=true \
+  --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
+  --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
+  --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
+  --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
+  --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
+  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+  -jar aem65-author-p4502.jar -p 4502 -nointeractive'
+
+# 2. Tail Log: Follows the error log from any directory
+alias aem-log='tail -f ~/aem/author/crx-quickstart/logs/error.log'
+
+# 3. Stop: Sends a graceful shutdown signal via the Sling Servlet
+# alias aem-stop='curl -u admin:admin -X POST http://localhost:4502/system/console/configMgr/org.apache.sling.launcher.system.SlingMainServlet?apply=true&action=stop'
+alias aem-stop='curl -u admin:admin -X POST "http://localhost:4502/system/console/configMgr/org.apache.sling.launcher.system.SlingMainServlet" -d "apply=true" -d "action=stop"'
+# 4. Status: Quick check to see if the Java process is actually running
+alias aem-status='ps -ef | grep aem65-author-p4502.jar | grep -v grep'
