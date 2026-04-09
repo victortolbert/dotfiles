@@ -285,13 +285,5 @@
 	{
 		"key": "ctrl+shift+alt+cmd+s",
 		"command": "editor.action.sortLinesAscending"
-    },
-    {
-        "key": "shift+enter",
-        "command": "workbench.action.terminal.sendSequence",
-        "args": {
-            "text": "\\\r\n"
-        },
-        "when": "terminalFocus"
-    }
+	}
 ]

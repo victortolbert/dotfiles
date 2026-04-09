@@ -1,0 +1,32 @@
+{
+  "Query Selector": {
+    "prefix": "ds",
+    "body": ["document.querySelector('$1')"]
+  },
+  "Console Log": {
+    "prefix": "cl",
+    "body": ["console.log($1)"]
+  },
+
+  "useState snippet": {
+    "prefix": "rus",
+    "body": "const [${1}, set${1/(^[a-zA-Z])(.*)/${1:/upcase}${2}/}] = useState(${2:default${1/(^[a-zA-Z])(.*)/${1:/upcase}${2}/}});",
+    "description": "use state but it camel cases"
+  },
+  "import React": {
+    "prefix": "ir",
+    "body": ["import * as React from 'react'\n"]
+  },
+  "index-file": {
+    "prefix": "index",
+    "body": [
+      "import ${TM_DIRECTORY/.*[\\/]//gm} from './${TM_DIRECTORY/.*[\\/]//gm}';",
+      "export { ",
+      "\t${TM_DIRECTORY/.*[\\/]//gm},",
+      "};",
+      "export default ${TM_DIRECTORY/.*[\\/]//gm}",
+      ""
+    ],
+    "description": "Index file"
+  }
+}

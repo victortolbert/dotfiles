@@ -1,0 +1,85 @@
+{
+    // Place your snippets for blade here. Each snippet is defined under a snippet name and has a prefix, body and
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+    // same ids are connected.
+    // Example:
+    "Form Input": {
+        "prefix": "forminput",
+        "body": [
+            "<div class=\"mb-6\">",
+            "    <label for=\"${1}\" class=\"block mb-2 uppercase font-bold text-xs text-gray-700\">",
+            "        ${2}",
+            "    </label>",
+            "",
+            "    <input class=\"border border-gray-400 p-2 w-full\"",
+            "        type=\"text\"",
+            "        id=\"${1}\"",
+            "        name=\"${1}\"",
+            "        required",
+            "    >",
+            "",
+            "    @error('${1}')",
+            "        <p class=\"text-red-500 text-xs mt-2\">",
+            "            {{ \\$message }}",
+            "        </p>",
+            "    @enderror",
+            "</div>",
+            "",
+            "$0"
+        ],
+        "description": "Form input"
+    },
+    "Form Textarea": {
+        "prefix": "formtextarea",
+        "body": [
+            "<div class=\"mb-6\">",
+            "    <label for=\"${1:name}\" class=\"block mb-2 uppercase font-bold text-xs text-gray-700\">",
+            "        ${1/(.*)/${1:/capitalize}/}",
+            "    </label>",
+            "",
+            "    <textarea class=\"border border-gray-400 p-2 w-full\"",
+            "        type=\"text\"",
+            "        id=\"$1\"",
+            "        name=\"$1\"",
+            "        required",
+            "    ></textarea>",
+            "",
+            "    @error('$1')",
+            "        <p class=\"text-red-500 text-xs mt-2\">",
+            "            {{ \\$message }}",
+            "        </p>",
+            "    @enderror",
+            "</div>",
+            "",
+            "$0"
+        ],
+        "description": "Form input"
+    },
+    "Form Submit": {
+        "prefix": "formsubmit",
+        "body": [
+            "<div class=\"mb-6\">",
+            "    <label for=\"${1:name}\" class=\"block mb-2 uppercase font-bold text-xs text-gray-700\">",
+            "        ${1/(.*)/${1:/capitalize}/}",
+            "    </label>",
+            "",
+            "    <input class=\"border border-gray-400 p-2 w-full\"",
+            "        type=\"text\"",
+            "        id=\"$1\"",
+            "        name=\"$1\"",
+            "        required",
+            "    >",
+            "",
+            "    @error('$1')",
+            "        <p class=\"text-red-500 text-xs mt-2\">",
+            "            {{ \\$message }}",
+            "        </p>",
+            "    @enderror",
+            "</div>",
+            "",
+            "$0"
+        ],
+        "description": "Form input"
+    },
+}

@@ -1,0 +1,22 @@
+{
+	"servers": {
+		"figma": {
+			"url": "https://mcp.figma.com/mcp",
+			"type": "http"
+		},
+		"figma-desktop": {
+			"url": "http://127.0.0.1:3845/sse",
+			"type": "http"
+		},
+		"wallaby": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"-c",
+				"node ~/.wallaby/mcp/"
+			],
+			"type": "stdio"
+		}
+	},
+	"inputs": []
+}

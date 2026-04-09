@@ -1,0 +1,87 @@
+{
+  // "Template": {
+  //   "prefix": "t",
+  //   "body": [
+  //     "<template>",
+  //     "  <main class=\"flex-1\">",
+  //     "    $1",
+  //     "  </main>",
+  //     "</template>",
+  //     "",
+  //     "<script lang=\"ts\">",
+  //     "  import { defineComponent, ref } from 'vue'"
+  //           "  import { useI18n } from 'vue-i18n'",
+  //     "",
+  //     "  export default defineComponent({",
+  //     "    setup() {",
+  //     "      const { t } = useI18n()"
+  //           "      return { t }"
+  //           "    },",
+  //     "  })",
+  //     "</script>",
+  //     "",
+  //     "<styl lang=\"postcss\">",
+  //     "  $2",
+  //     "</styl>",
+  //   ],
+  //   "description": "Vue template"
+  // },
+  "Hero": {
+    "prefix": "h",
+    "body": [
+      "<BaseHero :title=\"$1\" />",
+    ],
+    "description": "An imposing hero banner to showcase something"
+  },
+  "Icon Solid": {
+    "prefix": "is",
+    "body": [
+      "<BaseIconSolid name=\"$1\" />",
+    ],
+    "description": "For buttons, form elements, and to support text, designed to be rendered at 20x20."
+  },
+  "Icon Outlined": {
+    "prefix": "io",
+    "body": [
+      "<BaseIconOutlined name=\"$1\" />$2",
+    ],
+    "description": "For primary navigation and marketing sections, designed to be rendered at 24x24."
+  },
+  "Style": {
+    "prefix": "st",
+    "body": [
+      "<style lang=\"postcss\">",
+      "  $1",
+      "</style>",
+    ],
+    "description": ""
+  },
+  "Script": {
+    "prefix": "sc",
+    "body": [
+      "<script lang=\"ts\">",
+      "  $1",
+      "</script>",
+    ],
+    "description": ""
+  },
+  "Vue_Component": {
+    "prefix": "template",
+    "body": [
+      "<template>",
+      "\t$0",
+      "</template>",
+      "",
+      "<script>",
+      "export default {",
+      "\tname: '${TM_FILENAME/[\\.]vue//}'",
+      "};",
+      "</script>",
+      "",
+      "<style lang=\"scss\">",
+      "</style>",
+      ""
+    ],
+    "description": "Single file template"
+  }
+}

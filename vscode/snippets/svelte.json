@@ -1,0 +1,22 @@
+{
+  "Create page script": {
+    "prefix": "vs",
+    "body": [
+      "<script lang=\"ts\">;",
+      "  import { writable } from 'svelte/store';",
+      "  import { page } from '$app/stores';",
+      "  import type { ${1|PageData,LayoutData|} } from './\\$types';",
+      "",
+      "  export let data: $1;",
+      "</script>",
+      "",
+      "$0"
+    ],
+    "description": "Create a Svelte page script"
+  },
+  "For Loop": {
+    "prefix": ["for", "for-const"],
+    "body": ["for (const ${2:element} of ${1:array}) {", "\t$0", "}"],
+    "description": "A for loop."
+  }
+}
