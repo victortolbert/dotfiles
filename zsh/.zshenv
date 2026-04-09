@@ -7,3 +7,6 @@ if [[ "$(hostname -s)" == "milton" ]]; then
   export OP_BIOMETRIC_UNLOCK_ENABLED=false
   [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 fi
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
