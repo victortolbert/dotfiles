@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# migrate-fonts — sync user fonts from peter (old mac) to brian (new mac)
+#
+# Run this on brian. Requires SSH access to peter (Tailscale works).
+# 922 fonts ≈ tens of MB; rsync handles it in one pass.
+#
+# Usage:
+#   migrate-fonts               # pull from peter over ssh
+#   migrate-fonts --tar <file>  # extract a tarball produced on peter
+#
+# To produce a tarball on peter instead of using ssh:
+#   tar -czf ~/Desktop/user-fonts.tgz -C ~/Library Fonts
+
+set -euo pipefail
+
+REMOTE_HOST="${MIGRATE_FONTS_SRC:-peter}"
+LOCAL_FONTS="$HOME/Library/Fonts"
+
+mkdir -p "$LOCAL_FONTS"
+
+if [[ "${1:-}" == "--tar" ]]; then
+  tarball="${2:?Usage: migrate-fonts --tar <tarball>}"
+  echo "Extracting $tarball into ~/Library/Fonts …"
+  tar -xzf "$tarball" -C "$HOME/Library"
+  echo "Done. Active font cache will rebuild automatically."
+  exit 0
+fi
+
+echo "Pulling fonts from $REMOTE_HOST:~/Library/Fonts → $LOCAL_FONTS"
+echo "(Override source with MIGRATE_FONTS_SRC=<host> migrate-fonts)"
+rsync -avh --progress --ignore-existing \
+  "$REMOTE_HOST:Library/Fonts/" \
+  "$LOCAL_FONTS/"
+
+echo
+echo "Done. You may need to restart running apps to see new fonts."
