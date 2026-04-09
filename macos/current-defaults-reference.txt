@@ -1,0 +1,2831 @@
+# macOS defaults reference — extracted from peter on 2026-04-09
+# This is a READ-ONLY reference. The canonical setup lives in defaults.sh.
+# Use this file to remind yourself of non-default values you've tweaked over time.
+
+
+==========================================
+# com.apple.finder
+==========================================
+{
+    ComputerViewSettings =     {
+        CustomViewStyleVersion = 1;
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{440, 474}, {920, 492}}";
+        };
+    };
+    CopyProgressWindowLocation = "{564, 156}";
+    CreateDesktop = 1;
+    DataSeparatedDisplayNameCache = "";
+    DesktopViewSettings =     {
+        GroupBy = Kind;
+        IconViewSettings =         {
+            arrangeBy = dateAdded;
+            backgroundColorBlue = 1;
+            backgroundColorGreen = 1;
+            backgroundColorRed = 1;
+            backgroundType = 0;
+            gridOffsetX = 0;
+            gridOffsetY = 0;
+            gridSpacing = 54;
+            iconSize = 64;
+            labelOnBottom = 1;
+            showIconPreview = 1;
+            showItemInfo = 0;
+            textSize = 12;
+            viewOptionsVersion = 1;
+        };
+    };
+    DownloadsFolderListViewSettingsVersion = 1;
+    EmptyTrashProgressWindowLocation = "{700, 309}";
+    "FK_AppCentricShowSidebar" = 1;
+    "FK_DefaultIconViewSettings" =     {
+        arrangeBy = name;
+        backgroundColorBlue = 1;
+        backgroundColorGreen = 1;
+        backgroundColorRed = 1;
+        backgroundType = 0;
+        gridOffsetX = 0;
+        gridOffsetY = 0;
+        gridSpacing = 54;
+        iconSize = 64;
+        labelOnBottom = 1;
+        showIconPreview = 1;
+        showItemInfo = 1;
+        textSize = 12;
+        viewOptionsVersion = 1;
+    };
+    "FK_DefaultListViewSettingsV2" =     {
+        calculateAllSizes = 0;
+        columns =         (
+                        {
+                ascending = 1;
+                identifier = name;
+                visible = 1;
+                width = 433;
+            },
+                        {
+                ascending = 0;
+                identifier = ubiquity;
+                visible = 0;
+                width = 35;
+            },
+                        {
+                ascending = 0;
+                identifier = dateCreated;
+                visible = 0;
+                width = 181;
+            },
+                        {
+                ascending = 0;
+                identifier = size;
+                visible = 1;
+                width = 110;
+            },
+                        {
+                ascending = 0;
+                identifier = kind;
+                visible = 1;
+                width = 60;
+            },
+                        {
+                ascending = 1;
+                identifier = label;
+                visible = 0;
+                width = 100;
+            },
+                        {
+                ascending = 1;
+                identifier = version;
+                visible = 0;
+                width = 75;
+            },
+                        {
+                ascending = 1;
+                identifier = comments;
+                visible = 0;
+                width = 300;
+            },
+                        {
+                ascending = 0;
+                identifier = dateLastOpened;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = shareOwner;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = shareLastEditor;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = dateModified;
+                visible = 1;
+                width = 123;
+            },
+                        {
+                ascending = 1;
+                identifier = dateAdded;
+                visible = 1;
+                width = 181;
+            },
+                        {
+                ascending = 0;
+                identifier = invitationStatus;
+                visible = 0;
+                width = 210;
+            }
+        );
+        iconSize = 16;
+        showIconPreview = 1;
+        sortColumn = dateModified;
+        textSize = 13;
+        useRelativeDates = 1;
+        viewOptionsVersion = 1;
+    };
+    "FK_SidebarWidth" = 172;
+    "FK_SidebarWidth2" = 152;
+    "FK_StandardViewOptions2" =     {
+        ColumnViewOptions =         {
+            ArrangeBy = dnam;
+            ColumnShowFolderArrow = 1;
+            ColumnShowIcons = 1;
+            ColumnWidth = 245;
+            FontSize = 13;
+            PreviewDisclosureState = 1;
+            SharedArrangeBy = kipl;
+            ShowIconThumbnails = 1;
+            ShowPreview = 1;
+        };
+    };
+    "FK_StandardViewSettings" =     {
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 1;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = size;
+                    visible = 1;
+                    width = 97;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                }
+            );
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        IconViewSettings =         {
+            arrangeBy = none;
+            backgroundColorBlue = 1;
+            backgroundColorGreen = 1;
+            backgroundColorRed = 1;
+            backgroundType = 0;
+            gridOffsetX = 0;
+            gridOffsetY = 0;
+            gridSpacing = 54;
+            iconSize = 64;
+            labelOnBottom = 1;
+            showIconPreview = 1;
+            showItemInfo = 0;
+            textSize = 12;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 2;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 0;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 1;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 4;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 300;
+                };
+                size =                 {
+                    ascending = 0;
+                    index = 3;
+                    visible = 1;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        SettingsType = "FK_StandardViewSettings";
+    };
+    "FK_iCloudIconViewSettings" =     {
+        arrangeBy = dateModified;
+        backgroundColorBlue = 1;
+        backgroundColorGreen = 1;
+        backgroundColorRed = 1;
+        backgroundType = 0;
+        gridOffsetX = 0;
+        gridOffsetY = 0;
+        gridSpacing = 54;
+        iconSize = 64;
+        labelOnBottom = 1;
+        showIconPreview = 1;
+        showItemInfo = 0;
+        textSize = 12;
+        viewOptionsVersion = 1;
+    };
+    "FK_iCloudListViewSettingsV2" =     {
+        calculateAllSizes = 0;
+        columns =         (
+                        {
+                ascending = 1;
+                identifier = name;
+                visible = 1;
+                width = 366;
+            },
+                        {
+                ascending = 0;
+                identifier = ubiquity;
+                visible = 0;
+                width = 35;
+            },
+                        {
+                ascending = 0;
+                identifier = dateModified;
+                visible = 1;
+                width = 181;
+            },
+                        {
+                ascending = 0;
+                identifier = dateCreated;
+                visible = 0;
+                width = 181;
+            },
+                        {
+                ascending = 0;
+                identifier = size;
+                visible = 1;
+                width = 97;
+            },
+                        {
+                ascending = 1;
+                identifier = kind;
+                visible = 0;
+                width = 115;
+            },
+                        {
+                ascending = 1;
+                identifier = label;
+                visible = 0;
+                width = 100;
+            },
+                        {
+                ascending = 1;
+                identifier = version;
+                visible = 0;
+                width = 75;
+            },
+                        {
+                ascending = 1;
+                identifier = comments;
+                visible = 0;
+                width = 300;
+            },
+                        {
+                ascending = 0;
+                identifier = dateLastOpened;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = shareOwner;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = shareLastEditor;
+                visible = 0;
+                width = 200;
+            },
+                        {
+                ascending = 0;
+                identifier = dateAdded;
+                visible = 0;
+                width = 181;
+            },
+                        {
+                ascending = 0;
+                identifier = invitationStatus;
+                visible = 0;
+                width = 210;
+            }
+        );
+        iconSize = 16;
+        showIconPreview = 1;
+        sortColumn = dateModified;
+        textSize = 13;
+        useRelativeDates = 1;
+        userDidChangeSort = 1;
+        viewOptionsVersion = 1;
+    };
+    FXArrangeGroupViewBy = Name;
+    FXDefaultSearchScope = SCcf;
+    FXDesktopTouchBarUpgradedToTenTwelveOne = 1;
+    FXDesktopVolumePositions =     {
+        "Firefox Developer Edition_0x1.66f193dp+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+        "Google Chrome Canary_0x1.66f553cp+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+        "Google Chrome_0x1.66ccaf6p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+        "Grammarly_0x1.66dd95b8p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+        "Hyper 3.4.1-arm64_0x1.4b50a938p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 190;
+        };
+        "Karabiner-Elements-15.3.0_0x1.667e4c28p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 190;
+        };
+        "Raycast_0x1.66e8346p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+        "T9_-0x1.d27e44p+29" =         {
+            AnchorRelativeTo = 1;
+            ScreenID = 0;
+            xRelative = "-65";
+            yRelative = 78;
+        };
+    };
+    FXDetachedDesktopProviderID = "com.apple.CloudDocs.iCloudDriveFileProvider/BC554491-01CB-4214-8DD8-3A24383DC333";
+    FXDetachedDocumentsProviderID = "com.apple.CloudDocs.iCloudDriveFileProvider/BC554491-01CB-4214-8DD8-3A24383DC333";
+    FXICloudDriveDesktop = 1;
+    FXICloudDriveDocuments = 1;
+    FXICloudDriveEnabled = 1;
+    FXICloudLoggedIn = 1;
+    FXInfoPanesExpanded =     {
+        OpenWith = 1;
+        Privileges = 1;
+    };
+    FXInfoWindowWidth = 372;
+    "FXPreferencesWindow.Location" = "{{333, 606}, {377, 380}}";
+    FXPreferredGroupBy = Kind;
+    FXPreferredSearchViewStyle = Nlsv;
+    FXPreferredSearchViewStyleVersion = "%00%00%00%01";
+    FXPreferredViewStyle = Nlsv;
+    FXQuickActionsConfigUpgradeLevel = 3;
+    FXRecentFolders =     (
+                {
+            "file-bookmark" = {length = 724, bytes = 0x626f6f6b d4020000 00000510 40000000 ... 04000000 00000000 };
+            name = tries;
+        },
+                {
+            "file-bookmark" = {length = 928, bytes = 0x626f6f6b a0030000 00000510 40000000 ... 04000000 00000000 };
+            name = "aibw-calculator";
+        },
+                {
+            "file-bookmark" = {length = 880, bytes = 0x626f6f6b 70030000 00000510 40000000 ... 04000000 00000000 };
+            name = hcp;
+        },
+                {
+            "file-bookmark" = {length = 844, bytes = 0x626f6f6b 4c030000 00000510 40000000 ... 04000000 00000000 };
+            name = elahere;
+        },
+                {
+            "file-bookmark" = {length = 1516, bytes = 0x626f6f6b ec050000 00000510 40000000 ... cc040000 00000000 };
+            name = "Blackmagic DaVinci Resolve";
+        },
+                {
+            "file-bookmark" = {length = 728, bytes = 0x626f6f6b d8020000 00000510 40000000 ... 04000000 00000000 };
+            name = "admp-ivy";
+        },
+                {
+            "file-bookmark" = {length = 524, bytes = 0x626f6f6b 0c020000 00000510 40000000 ... 04000000 00000000 };
+            name = Applications;
+        },
+                {
+            "file-bookmark" = {length = 788, bytes = 0x626f6f6b 14030000 00000510 40000000 ... 04000000 00000000 };
+            name = "iCloud Drive";
+        },
+                {
+            "file-bookmark" = {length = 648, bytes = 0x626f6f6b 88020000 00000510 40000000 ... 04000000 00000000 };
+            name = victortolbert;
+        },
+                {
+            "file-bookmark" = {length = 1592, bytes = 0x626f6f6b 38060000 00000510 40000000 ... 0c050000 00000000 };
+            name = "T3 Code (Alpha) 0.0.4-arm64";
+        }
+    );
+    FXSidebarUpgradedSharedSearchToTwelve = 1;
+    FXSidebarUpgradedToSixteen = 1;
+    FXSidebarUpgradedToTenFourteen = 1;
+    FXSidebarUpgradedToTenTen = 1;
+    FXSyncExtensionToolbarItemsAutomaticallyAdded =     (
+        "com.getdropbox.dropbox.garcon"
+    );
+    FXSyncExtensionToolbarItemsPendingAdd =     (
+    );
+    FXSyncExtensionToolbarItemsPendingRemove =     (
+    );
+    FXToolbarUpgradedToTenEight = 1;
+    FXToolbarUpgradedToTenNine = 2;
+    FXToolbarUpgradedToTenSeven = 1;
+    FavoriteTagNames =     (
+        "",
+        Red,
+        Orange,
+        Yellow,
+        Green,
+        Blue,
+        Purple,
+        Gray
+    );
+    GoToField = "/Users/victortolbert/Projects/2025/12/HancockConnect/HancockConnect.Mobile/bin/Debug/net9.0-maccatalyst/maccatalyst-arm64/";
+    GoToFieldHistory =     (
+        "/Users/victortolbert/Projects/2025/12/HancockConnect/HancockConnect.Mobile/bin/Debug/net9.0-maccatalyst/maccatalyst-arm64",
+        "/Users/victortolbert/Library"
+    );
+    ICloudViewSettings =     {
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = ubiquity;
+                    visible = 0;
+                    width = 35;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 1;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = size;
+                    visible = 1;
+                    width = 97;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateAdded;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = invitationStatus;
+                    visible = 0;
+                    width = 210;
+                }
+            );
+            iconSize = 16;
+            scrollPositionX = "-160.5";
+            scrollPositionY = 0;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 2;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 0;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 1;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 4;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 300;
+                };
+                size =                 {
+                    ascending = 0;
+                    index = 3;
+                    visible = 1;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            scrollPositionX = "-160.5";
+            scrollPositionY = 0;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{352, 233}, {1033, 673}}";
+        };
+    };
+    LastTrashState = 0;
+    MeetingRoomViewSetting =     {
+        CustomViewStyleVersion = 1;
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 0;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{296, 398}, {920, 436}}";
+        };
+    };
+    NSNavPanelExpandedSizeForOpenMode = "{800, 448}";
+    NSOSPLastRootDirectory = {length = 688, bytes = 0x626f6f6b b0020000 00000510 40000000 ... 04000000 00000000 };
+    "NSToolbar Configuration Browser" =     {
+        "TB Default Item Identifiers" =         (
+            "com.apple.finder.BACK",
+            "com.apple.finder.SWCH",
+            NSToolbarSpaceItem,
+            "com.apple.finder.ARNG",
+            NSToolbarSpaceItem,
+            "com.apple.finder.SHAR",
+            "com.apple.finder.LABL",
+            "com.apple.finder.ACTN",
+            NSToolbarSpaceItem,
+            "com.apple.finder.SRCH"
+        );
+        "TB Display Mode" = 1;
+        "TB Icon Size Mode" = 1;
+        "TB Is Shown" = 1;
+        "TB Item Identifiers" =         (
+            "com.apple.finder.BACK",
+            "com.apple.finder.PATH",
+            "com.apple.finder.SWCH",
+            NSToolbarSpaceItem,
+            "com.apple.finder.ARNG",
+            "com.apple.finder.SHAR",
+            "com.apple.finder.LABL",
+            "com.apple.finder.ACTN",
+            NSToolbarSpaceItem,
+            NSToolbarSpaceItem,
+            "com.apple.finder.SRCH"
+        );
+        "TB Size Mode" = 1;
+    };
+    "NSWindow Frame GoToSheet" = "766 637 460 180 0 0 1800 1125 ";
+    "NSWindow Frame NSNavPanelAutosaveName" = "162 280 800 448 0 0 1800 1125 ";
+    NetworkViewSettings =     {
+        CustomViewStyleVersion = 1;
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 0;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{296, 398}, {920, 436}}";
+        };
+    };
+    NewWindowTarget = PfLo;
+    NewWindowTargetPath = "file:///Users/victortolbert/Projects/";
+    "PreferencesWindow.LastSelection" = ADVD;
+    RecentMoveAndCopyDestinations =     (
+        "file:///Applications/",
+        "file:///Users/victortolbert/Library/Mobile%20Documents/com~apple~CloudDocs/Downloads/",
+        "file:///Users/victortolbert/Pictures/",
+        "file:///Users/victortolbert/Downloads/2010/",
+        "file:///Users/victortolbert/Downloads/",
+        "file:///Users/victortolbert/Documents/",
+        "file:///Users/victortolbert/Desktop/",
+        "file:///Users/victortolbert/Library/Fonts/"
+    );
+    RecentsArrangeGroupViewBy = "Date Last Opened";
+    SearchRecentsSavedViewStyle = Nlsv;
+    SearchRecentsSavedViewStyleVersion = "%00%00%00%01";
+    SearchRecentsViewSettings =     {
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 346;
+                },
+                                {
+                    ascending = 0;
+                    identifier = ubiquity;
+                    visible = 0;
+                    width = 35;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = size;
+                    visible = 0;
+                    width = 97;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 1;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateAdded;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = invitationStatus;
+                    visible = 0;
+                    width = 210;
+                }
+            );
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = dateLastOpened;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 2;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 1;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 0;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 4;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 346;
+                };
+                size =                 {
+                    ascending = 0;
+                    index = 3;
+                    visible = 0;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = dateLastOpened;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{296, 398}, {920, 436}}";
+        };
+    };
+    SearchViewSettings =     {
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 295;
+                },
+                                {
+                    ascending = 0;
+                    identifier = ubiquity;
+                    visible = 0;
+                    width = 35;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = size;
+                    visible = 0;
+                    width = 97;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 1;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateAdded;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = invitationStatus;
+                    visible = 0;
+                    width = 210;
+                }
+            );
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = kind;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 2;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 1;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 0;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 4;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 295;
+                };
+                size =                 {
+                    ascending = 0;
+                    index = 3;
+                    visible = 0;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = kind;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{479, 246}, {1033, 673}}";
+        };
+    };
+    ShowExternalHardDrivesOnDesktop = 1;
+    ShowHardDrivesOnDesktop = 0;
+    ShowMountedServersOnDesktop = 1;
+    ShowPathbar = 1;
+    ShowRemovableMediaOnDesktop = 1;
+    ShowSidebar = 1;
+    ShowStatusBar = 1;
+    SidebarDevicesSectionDisclosedState = 1;
+    SidebarPlacesSectionDisclosedState = 1;
+    SidebarShowingSignedIntoiCloud = 1;
+    SidebarShowingiCloudDesktop = 1;
+    SidebarTagsSctionDisclosedState = 1;
+    SidebarWidth = 217;
+    SidebarWidth2 = 152;
+    SidebariCloudDriveSectionDisclosedState = 1;
+    SmartSharedSearchViewSettings =     {
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{271, 199}, {1175, 764}}";
+        };
+    };
+    StandardViewSettings =     {
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 1;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = size;
+                    visible = 1;
+                    width = 97;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                }
+            );
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        GalleryViewSettings =         {
+            arrangeBy = name;
+            iconSize = 48;
+            showIconPreview = 1;
+            viewOptionsVersion = 1;
+        };
+        IconViewSettings =         {
+            arrangeBy = none;
+            backgroundColorBlue = 1;
+            backgroundColorGreen = 1;
+            backgroundColorRed = 1;
+            backgroundType = 0;
+            gridOffsetX = 0;
+            gridOffsetY = 0;
+            gridSpacing = 54;
+            iconSize = 64;
+            labelOnBottom = 1;
+            showIconPreview = 1;
+            showItemInfo = 0;
+            textSize = 12;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 2;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 0;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 1;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 4;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 300;
+                };
+                size =                 {
+                    ascending = 0;
+                    index = 3;
+                    visible = 1;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            showIconPreview = 1;
+            sortColumn = name;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        SettingsType = StandardViewSettings;
+    };
+    TagsCloudSerialNumber = 95;
+    TrashViewSettings =     {
+        CustomViewStyleVersion = 1;
+        ExtendedListViewSettingsV2 =         {
+            calculateAllSizes = 0;
+            columns =             (
+                                {
+                    ascending = 1;
+                    identifier = name;
+                    visible = 1;
+                    width = 157;
+                },
+                                {
+                    ascending = 0;
+                    identifier = ubiquity;
+                    visible = 0;
+                    width = 35;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateCreated;
+                    visible = 0;
+                    width = 181;
+                },
+                                {
+                    ascending = 1;
+                    identifier = kind;
+                    visible = 1;
+                    width = 115;
+                },
+                                {
+                    ascending = 1;
+                    identifier = size;
+                    visible = 1;
+                    width = 97;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateModified;
+                    visible = 1;
+                    width = 181;
+                },
+                                {
+                    ascending = 1;
+                    identifier = label;
+                    visible = 0;
+                    width = 100;
+                },
+                                {
+                    ascending = 1;
+                    identifier = version;
+                    visible = 0;
+                    width = 75;
+                },
+                                {
+                    ascending = 1;
+                    identifier = comments;
+                    visible = 0;
+                    width = 300;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateLastOpened;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareOwner;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = shareLastEditor;
+                    visible = 0;
+                    width = 200;
+                },
+                                {
+                    ascending = 0;
+                    identifier = dateAdded;
+                    visible = 1;
+                    width = 181;
+                },
+                                {
+                    ascending = 0;
+                    identifier = invitationStatus;
+                    visible = 0;
+                    width = 210;
+                }
+            );
+            iconSize = 16;
+            scrollPositionX = 0;
+            scrollPositionY = 0;
+            showIconPreview = 1;
+            sortColumn = dateModified;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        ListViewSettings =         {
+            calculateAllSizes = 0;
+            columns =             {
+                comments =                 {
+                    ascending = 1;
+                    index = 7;
+                    visible = 0;
+                    width = 300;
+                };
+                dateCreated =                 {
+                    ascending = 0;
+                    index = 1;
+                    visible = 0;
+                    width = 181;
+                };
+                dateLastOpened =                 {
+                    ascending = 0;
+                    index = 8;
+                    visible = 0;
+                    width = 200;
+                };
+                dateModified =                 {
+                    ascending = 0;
+                    index = 4;
+                    visible = 1;
+                    width = 181;
+                };
+                kind =                 {
+                    ascending = 1;
+                    index = 2;
+                    visible = 1;
+                    width = 115;
+                };
+                label =                 {
+                    ascending = 1;
+                    index = 5;
+                    visible = 0;
+                    width = 100;
+                };
+                name =                 {
+                    ascending = 1;
+                    index = 0;
+                    visible = 1;
+                    width = 157;
+                };
+                size =                 {
+                    ascending = 1;
+                    index = 3;
+                    visible = 1;
+                    width = 97;
+                };
+                version =                 {
+                    ascending = 1;
+                    index = 6;
+                    visible = 0;
+                    width = 75;
+                };
+            };
+            iconSize = 16;
+            scrollPositionX = 0;
+            scrollPositionY = 0;
+            showIconPreview = 1;
+            sortColumn = dateModified;
+            textSize = 13;
+            useRelativeDates = 1;
+            viewOptionsVersion = 1;
+        };
+        WindowState =         {
+            ContainerShowSidebar = 1;
+            ShowSidebar = 1;
+            ShowStatusBar = 1;
+            ShowTabView = 0;
+            ShowToolbar = 1;
+            WindowBounds = "{{-0, -0}, {1800, 1125}}";
+        };
+    };
+    "_FXSortFoldersFirst" = 1;
+}
+
+==========================================
+# com.apple.dock
+==========================================
+{
+    autohide = 1;
+    "last-analytics-stamp" =     (
+        "797322910.2345721"
+    );
+    lastShowIndicatorTime = "795385016.913361";
+    loc = "en_US:US";
+    mineffect = scale;
+    "mod-count" = 465;
+    orientation = bottom;
+    "persistent-apps" =     (
+                {
+            GUID = 2289541901;
+            "tile-data" =             {
+                book = {length = 560, bytes = 0x626f6f6b 30020000 00000410 30000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.cocoatech.PathFinder";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Path%20Finder.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Path Finder";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 2348637088;
+            "tile-data" =             {
+                book = {length = 592, bytes = 0x626f6f6b 50020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.apps.launcher";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/Apps.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Apps;
+                "file-mod-date" = 3855704828;
+                "file-type" = 169;
+                "is-beta" = 0;
+                "parent-mod-date" = 3855704828;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1851307126;
+            "tile-data" =             {
+                book = {length = 596, bytes = 0x626f6f6b 54020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.freeform";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/Freeform.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Freeform;
+                "file-mod-date" = 3855711660;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3855711660;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1851307127;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000410 30000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.TV";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/TV.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = TV;
+                "file-mod-date" = 3813283895;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3813283895;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1851307129;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000410 30000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.news";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/News.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = News;
+                "file-mod-date" = 3813283895;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3813283895;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 4259566264;
+            "tile-data" =             {
+                book = {length = 772, bytes = 0x626f6f6b 04030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.ipcjikeinfbeibhckhiobigmagodlkli";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/HEY.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = HEY;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 396848142;
+            "tile-data" =             {
+                book = {length = 640, bytes = 0x626f6f6b 80020000 00000510 40000000 ... 44010000 00000000 };
+                "bundle-identifier" = "com.firstversionist.polypane";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Polypane.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Polypane;
+                "file-mod-date" = 226279907408182;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 125854985929787;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879474;
+            "tile-data" =             {
+                book = {length = 584, bytes = 0x626f6f6b 48020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.VSCode";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Visual%20Studio%20Code.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Visual Studio Code";
+                "file-mod-date" = 3848507422;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 125854985929787;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 586240257;
+            "tile-data" =             {
+                book = {length = 604, bytes = 0x626f6f6b 5c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.ScreenContinuity";
+                "dock-extra" = 1;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/iPhone%20Mirroring.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "iPhone Mirroring";
+                "file-mod-date" = 3829181962;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3829181962;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879469;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.tinyapp.TablePlus";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/TablePlus.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = TablePlus;
+                "file-mod-date" = 138812903901962;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 194806392540126;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879470;
+            "tile-data" =             {
+                book = {length = 596, bytes = 0x626f6f6b 54020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.Notes";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/Notes.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Notes;
+                "file-mod-date" = 3829181962;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3829181962;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879471;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "net.pornel.ImageOptim";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/ImageOptim.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = ImageOptim;
+                "file-mod-date" = 249820586738639;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 72524343926707;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879472;
+            "tile-data" =             {
+                book = {length = 568, bytes = 0x626f6f6b 38020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "de.beyondco.herd";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Herd.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Herd;
+                "file-mod-date" = 234405967295424;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 144838719392641;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879473;
+            "tile-data" =             {
+                book = {length = 572, bytes = 0x626f6f6b 3c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.figma.Desktop";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Figma.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Figma;
+                "file-mod-date" = 168246313566958;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 165905557050051;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 678879475;
+            "tile-data" =             {
+                book = {length = 584, bytes = 0x626f6f6b 48020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.google.Chrome.canary";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Google%20Chrome%20Canary.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Google Chrome Canary";
+                "file-mod-date" = 3848112256;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 236678028972229;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 996150842;
+            "tile-data" =             {
+                book = {length = 580, bytes = 0x626f6f6b 44020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Microsoft%20Edge.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Microsoft Edge";
+                "file-mod-date" = 3856230826;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 191671067080534;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 3948396522;
+            "tile-data" =             {
+                book = {length = 568, bytes = 0x626f6f6b 38020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.trae.app";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Trae.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Trae;
+                "file-mod-date" = 3836751624;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 20701303758665;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 2748993607;
+            "tile-data" =             {
+                book = {length = 776, bytes = 0x626f6f6b 08030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.dhmndkajieeobmfpephpiloggmcadfln";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Fizzy.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Fizzy;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 3044555585;
+            "tile-data" =             {
+                book = {length = 572, bytes = 0x626f6f6b 3c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "dev.fka.textream";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Textream.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Textream;
+                "file-mod-date" = 206282542685160;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 258066965516362;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 590201596;
+            "tile-data" =             {
+                book = {length = 648, bytes = 0x626f6f6b 88020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.ScreenSharing";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/Utilities/Screen%20Sharing.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Screen Sharing";
+                "file-mod-date" = 3855704828;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 3855704828;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 907870168;
+            "tile-data" =             {
+                book = {length = 772, bytes = 0x626f6f6b 04030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.poemkolicenobkfdpoibhjjbgmjnlnpj";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Suno.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Suno;
+                "file-mod-date" = 121100459620942;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 119983768263461;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 2063970881;
+            "tile-data" =             {
+                book = {length = 776, bytes = 0x626f6f6b 08030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.fmfeoakekdcmfaabhpfadglnhkmccmob";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/mail-web.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "mail-web";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393950;
+            "tile-data" =             {
+                book = {length = 572, bytes = 0x626f6f6b 3c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.mitchellh.ghostty";
+                "dock-extra" = 1;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Ghostty.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Ghostty;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393951;
+            "tile-data" =             {
+                book = {length = 572, bytes = 0x626f6f6b 3c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.canva.canvaeditor";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Canva.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Canva;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393952;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "net.telestream.screenflow10";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/ScreenFlow.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = ScreenFlow;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393953;
+            "tile-data" =             {
+                book = {length = 576, bytes = 0x626f6f6b 40020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.electron.wispr-flow";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Wispr%20Flow.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Wispr Flow";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393954;
+            "tile-data" =             {
+                book = {length = 580, bytes = 0x626f6f6b 44020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.tdesktop.Telegram";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Telegram%20Desktop.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Telegram Desktop";
+                "file-mod-date" = 3718350699;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 66137763543409;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393955;
+            "tile-data" =             {
+                book = {length = 596, bytes = 0x626f6f6b 54020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.VSCodeInsiders";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Visual%20Studio%20Code%20-%20Insiders.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Visual Studio Code - Insiders";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393956;
+            "tile-data" =             {
+                book = {length = 1136, bytes = 0x626f6f6b 70040000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.Safari";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Safari;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393957;
+            "tile-data" =             {
+                book = {length = 604, bytes = 0x626f6f6b 5c020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.apple.systempreferences";
+                "dock-extra" = 1;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///System/Applications/System%20Settings.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "System Settings";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393958;
+            "tile-data" =             {
+                book = {length = 580, bytes = 0x626f6f6b 44020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.teams2";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Microsoft%20Teams.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Microsoft Teams";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393959;
+            "tile-data" =             {
+                book = {length = 788, bytes = 0x626f6f6b 14030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.abagipkmgjigfbfijfapflkbhkddajnk";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Microsoft%20Designer.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Microsoft Designer";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393960;
+            "tile-data" =             {
+                book = {length = 776, bytes = 0x626f6f6b 08030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.kippjfofjhjlffjecoapiogbkgbpmgej";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Facebook.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Facebook;
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393961;
+            "tile-data" =             {
+                book = {length = 780, bytes = 0x626f6f6b 0c030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.aghbiahbpaijignceidepookljebhfak";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Google%20Drive.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Google Drive";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393962;
+            "tile-data" =             {
+                book = {length = 780, bytes = 0x626f6f6b 0c030000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.microsoft.edgemac.app.gebejlfcapfmdmpganmfklamphjmlkgi";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Applications/Edge%20Apps.localized/Tailscale.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Tailscale;
+                "file-mod-date" = 269500168686975;
+                "file-type" = 41;
+                "is-beta" = 0;
+                "parent-mod-date" = 119983768263461;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393963;
+            "tile-data" =             {
+                book = {length = 712, bytes = 0x626f6f6b c8020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.adobe.acc.AdobeCreativeCloud";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/Utilities/Adobe%20Creative%20Cloud/ACC/Creative%20Cloud.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "Creative Cloud";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        },
+                {
+            GUID = 1539393964;
+            "tile-data" =             {
+                book = {length = 628, bytes = 0x626f6f6b 74020000 00000510 40000000 ... 04000000 00000000 };
+                "bundle-identifier" = "com.blackmagic-design.DaVinciResolve";
+                "dock-extra" = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Applications/DaVinci%20Resolve/DaVinci%20Resolve.app/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = "DaVinci Resolve";
+                "file-mod-date" = 0;
+                "file-type" = 1;
+                "is-beta" = 0;
+                "parent-mod-date" = 0;
+            };
+            "tile-type" = "file-tile";
+        }
+    );
+    "persistent-others" =     (
+                {
+            GUID = 1851307135;
+            "tile-data" =             {
+                arrangement = 2;
+                book = {length = 664, bytes = 0x626f6f6b 98020000 00000410 30000000 ... 04000000 00000000 };
+                displayas = 0;
+                "file-data" =                 {
+                    "_CFURLString" = "file:///Users/victortolbert/Downloads/";
+                    "_CFURLStringType" = 15;
+                };
+                "file-label" = Downloads;
+                "file-mod-date" = 180783282416014;
+                "file-type" = 2;
+                "is-beta" = 0;
+                "parent-mod-date" = 230205471091093;
+                preferreditemsize = "-1";
+                showas = 1;
+            };
+            "tile-type" = "directory-tile";
+        }
+    );
+    "recent-apps" =     (
+    );
+    region = US;
+    "show-recents" = 0;
+    tilesize = 64;
+    "trash-full" = 0;
+    version = 1;
+    "wvous-br-corner" = 14;
+}
+
+==========================================
+# com.apple.screencapture
+==========================================
+{
+    "last-analytics-stamp" = "797114942.166656";
+    "last-selection" =     {
+        Height = "279.875";
+        Width = 1360;
+        X = 68;
+        Y = "427.125";
+    };
+    "last-selection-display" = 0;
+    "location-last" = "~/Projects/static/figma/exporter/docs/public";
+    "show-thumbnail" = 0;
+    target = clipboard;
+}
+
+==========================================
+# com.apple.screensaver
+==========================================
+{
+    tokenRemovalAction = 0;
+}
+
+==========================================
+# com.apple.universalaccess
+==========================================
+{
+    History =     {
+        MouseKeys =         (
+                        {
+                Date = "2026-03-25 15:59:00";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-25 16:13:36";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-26 09:48:33";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-26 09:48:34";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-26 09:48:34";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-26 09:48:34";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-26 10:11:18";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-27 10:03:56";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-28 10:54:09";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-29 15:57:18";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-30 10:16:04";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-03-31 10:20:55";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-01 11:28:47";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-02 10:19:32";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-03 10:49:47";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-04 10:58:54";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-05 13:56:51";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-06 14:07:27";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 11:03:58";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:39:17";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-07 22:54:17";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 00:25:26";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:33";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:33";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:47";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:47";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:47";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:47";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:51";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:51";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:51";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:51";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:51";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:56";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:56";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:57";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:06:57";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:17:17";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:35:01";
+                Reason = LoadingPrefsA;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:35:01";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:35:01";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 02:35:01";
+                Reason = SessionChangedIsDisabled;
+                State = 0;
+            },
+                        {
+                Date = "2026-04-08 03:01:38";
+                Reason = LoadingPrefsA;
+                State = 0;
+            }
+        );
+    };
+    axShortcutExposedFeatures =     {
+        "feature.displayFilters" = 1;
+        "feature.fullKeyboardAccess" = 1;
+        "feature.headMouse" = 1;
+        "feature.hoverText" = 1;
+        "feature.hoverTyping" = 1;
+        "feature.increaseContrast" = 1;
+        "feature.invertDisplayColor" = 1;
+        "feature.liveSpeech" = 1;
+        "feature.mouseKeys" = 1;
+        "feature.reduceTransparency" = 1;
+        "feature.slowKeys" = 1;
+        "feature.stickyKeys" = 1;
+        "feature.systemTranscriptions" = 1;
+        "feature.virtualKeyboard" = 1;
+        "feature.voiceControl" = 1;
+        "feature.voiceOver" = 1;
+        "feature.zoom" = 1;
+    };
+    closeViewDesiredZoomFactor = "1.558904528617859";
+    closeViewHotkeysEnabled = 1;
+    closeViewSmoothImages = 0;
+    closeViewSplitScreenRatio = "0.2";
+    closeViewTrackpadGestureZoomEnabled = 0;
+    closeViewZoomDisplayID = 0;
+    closeViewZoomFactor = 1;
+    closeViewZoomFactorBeforeTermination = 1;
+    closeViewZoomScreenShareEnabledKey = 0;
+    closeViewZoomedIn = 0;
+    "com.apple.custommenu.apps" =     (
+        NSGlobalDomain
+    );
+    displaysLastCursorLocation =     {
+        0 =         {
+            X = "274.15625";
+            Y = 982;
+        };
+        1 =         {
+            X = "270.75";
+            Y = "981.8515625";
+        };
+    };
+    hoverTextEnabled = 0;
+    hoverTypingEnabled = 0;
+    liveSpeechEnabled = 0;
+    login = 0;
+    sessionChange = 0;
+    slowKey = 0;
+    slowKeyDelay = 250;
+    stickyKey = 0;
+    useStickyKeysShortcutKeys = 0;
+}
+
+==========================================
+# com.apple.menuextra.clock
+==========================================
+{
+    ShowAMPM = 1;
+    ShowDate = 0;
+    ShowDayOfWeek = 1;
+}
+
+==========================================
+# com.apple.driver.AppleBluetoothMultitouch.trackpad
+==========================================
+{
+    Clicking = 1;
+    DragLock = 0;
+    Dragging = 0;
+    TrackpadCornerSecondaryClick = 0;
+    TrackpadFiveFingerPinchGesture = 2;
+    TrackpadFourFingerHorizSwipeGesture = 2;
+    TrackpadFourFingerPinchGesture = 2;
+    TrackpadFourFingerVertSwipeGesture = 2;
+    TrackpadHandResting = 1;
+    TrackpadHorizScroll = 1;
+    TrackpadMomentumScroll = 1;
+    TrackpadPinch = 1;
+    TrackpadRightClick = 1;
+    TrackpadRotate = 1;
+    TrackpadScroll = 1;
+    TrackpadThreeFingerDrag = 1;
+    TrackpadThreeFingerHorizSwipeGesture = 0;
+    TrackpadThreeFingerTapGesture = 0;
+    TrackpadThreeFingerVertSwipeGesture = 0;
+    TrackpadTwoFingerDoubleTapGesture = 1;
+    TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
+    USBMouseStopsTrackpad = 0;
+    UserPreferences = 1;
+    version = 5;
+}
+
+==========================================
+# com.apple.AppleMultitouchTrackpad
+==========================================
+{
+    ActuateDetents = 1;
+    Clicking = 1;
+    DragLock = 0;
+    Dragging = 0;
+    FirstClickThreshold = 1;
+    ForceSuppressed = 0;
+    SecondClickThreshold = 1;
+    TrackpadCornerSecondaryClick = 0;
+    TrackpadFiveFingerPinchGesture = 2;
+    TrackpadFourFingerHorizSwipeGesture = 2;
+    TrackpadFourFingerPinchGesture = 2;
+    TrackpadFourFingerVertSwipeGesture = 2;
+    TrackpadHandResting = 1;
+    TrackpadHorizScroll = 1;
+    TrackpadMomentumScroll = 1;
+    TrackpadPinch = 1;
+    TrackpadRightClick = 1;
+    TrackpadRotate = 1;
+    TrackpadScroll = 1;
+    TrackpadThreeFingerDrag = 1;
+    TrackpadThreeFingerHorizSwipeGesture = 0;
+    TrackpadThreeFingerTapGesture = 0;
+    TrackpadThreeFingerVertSwipeGesture = 0;
+    TrackpadTwoFingerDoubleTapGesture = 1;
+    TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
+    USBMouseStopsTrackpad = 0;
+    UserPreferences = 1;
+    version = 12;
+}
+
+==========================================
+# com.apple.symbolichotkeys
+==========================================
+{
+    AppleSymbolicHotKeys =     {
+        15 =         {
+            enabled = 1;
+        };
+        16 =         {
+            enabled = 0;
+        };
+        164 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    65535,
+                    65535,
+                    0
+                );
+                type = standard;
+            };
+        };
+        17 =         {
+            enabled = 1;
+        };
+        179 =         {
+            enabled = 1;
+        };
+        18 =         {
+            enabled = 0;
+        };
+        184 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    53,
+                    23,
+                    1179648
+                );
+                type = standard;
+            };
+        };
+        19 =         {
+            enabled = 1;
+        };
+        20 =         {
+            enabled = 0;
+        };
+        21 =         {
+            enabled = 0;
+        };
+        22 =         {
+            enabled = 0;
+        };
+        23 =         {
+            enabled = 1;
+        };
+        24 =         {
+            enabled = 0;
+        };
+        25 =         {
+            enabled = 0;
+        };
+        26 =         {
+            enabled = 0;
+        };
+        28 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    51,
+                    20,
+                    1179648
+                );
+                type = standard;
+            };
+        };
+        29 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    51,
+                    20,
+                    1441792
+                );
+                type = standard;
+            };
+        };
+        30 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    52,
+                    21,
+                    1179648
+                );
+                type = standard;
+            };
+        };
+        31 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    52,
+                    21,
+                    1441792
+                );
+                type = standard;
+            };
+        };
+        60 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    32,
+                    49,
+                    262144
+                );
+                type = standard;
+            };
+        };
+        61 =         {
+            enabled = 0;
+            value =             {
+                parameters =                 (
+                    32,
+                    49,
+                    786432
+                );
+                type = standard;
+            };
+        };
+        64 =         {
+            enabled = 1;
+            value =             {
+                parameters =                 (
+                    32,
+                    49,
+                    524288
+                );
+                type = standard;
+            };
+        };
+        79 =         {
+            enabled = 1;
+        };
+        80 =         {
+            enabled = 1;
+        };
+        81 =         {
+            enabled = 1;
+        };
+        82 =         {
+            enabled = 1;
+        };
+    };
+}
+
+==========================================
+# NSGlobalDomain (selected keys)
+==========================================
+AppleShowAllExtensions = 1
+NSAutomaticCapitalizationEnabled = 1
+NSAutomaticPeriodSubstitutionEnabled = 1
+com.apple.swipescrolldirection = 0
+AppleInterfaceStyle = Dark
