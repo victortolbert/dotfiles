@@ -184,14 +184,17 @@ export PATH="$HOME/.local/bin:$PATH"
 
 
 # 1Password secrets — only auto-fetch on milton (headless, has service account token)
-# On peter, use `load-secrets` alias to fetch on-demand via Touch ID
-if [[ "$(hostname -s)" == "milton" ]]; then
-  export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password" 2>/dev/null)
-  export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password" 2>/dev/null)
-  export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password" 2>/dev/null)
-else
-  alias load-secrets='export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password") && export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password") && export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password") && echo "✅ Secrets loaded via 1Password"'
-fi
+# On peter and brian, use `load-secrets` alias to fetch on-demand via Touch ID
+case "$(hostname -s)" in
+  milton)
+    export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password" 2>/dev/null)
+    export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password" 2>/dev/null)
+    export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password" 2>/dev/null)
+    ;;
+  peter|brian)
+    alias load-secrets='export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password") && export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password") && export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password") && echo "✅ Secrets loaded via 1Password"'
+    ;;
+esac
 
 export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 

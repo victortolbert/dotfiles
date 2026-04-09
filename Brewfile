@@ -1,7 +1,4 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
-tap "homebrew/services"
+tap "oven-sh/bun"
 
 ###############
 # CORE SYSTEM #
@@ -40,11 +37,12 @@ brew "node"
 brew "pnpm"
 brew "nvm"
 brew "deno"
+brew "oven-sh/bun/bun"
+brew "jenv"
 
 brew "dotnet"
 brew "python"
 
-brew "docker"
 cask "docker"
 
 ###################
@@ -53,6 +51,7 @@ cask "docker"
 cask "raycast"
 cask "rectangle"
 cask "1password"
+cask "1password-cli"
 cask "tailscale"
 cask "obsidian"
 
@@ -67,7 +66,6 @@ cask "imageoptim"
 ###################
 cask "google-chrome"
 cask "firefox"
-cask "arc"
 
 ###################
 # UTILITIES       #
