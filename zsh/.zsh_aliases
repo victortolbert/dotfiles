@@ -459,3 +459,28 @@ alias uvr='uv run -p .venv'
 alias uvt='uv run -p ~/.codex/venvs/tools'
 
 
+
+# ===========================================
+# yt-dlp / ffmpeg
+# ===========================================
+# Best audio as mp3:  yta URL
+alias yta='yt-dlp -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
+# Best audio as wav:  ytw URL
+alias ytw='yt-dlp -x --audio-format wav -o "%(title)s.%(ext)s"'
+# Best video (mp4):   ytv URL
+alias ytv='yt-dlp -f "bv*+ba/b" --merge-output-format mp4 -o "%(title)s.%(ext)s"'
+# mp3 + thumbnail + metadata: ytm URL
+alias ytm='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata -o "%(title)s.%(ext)s"'
+# List available formats:  ytf URL
+alias ytf='yt-dlp -F'
+
+# Quick media info:  finfo file
+alias finfo='ffprobe -hide_banner'
+# Strip audio from video -> mp3:  tomp3 input.mp4
+tomp3() { ffmpeg -i "$1" -vn -q:a 0 "${1%.*}.mp3"; }
+# Convert any file -> wav:  towav input.m4a
+towav() { ffmpeg -i "$1" "${1%.*}.wav"; }
+# Lossless trim:  vcut input.mp4 00:00:30 00:01:45 [out.mp4]
+vcut() { ffmpeg -i "$1" -ss "$2" -to "$3" -c copy "${4:-${1%.*}_clip.${1##*.}}"; }
+# Make a gif:  togif input.mp4 [out.gif]
+togif() { ffmpeg -i "$1" -vf "fps=12,scale=480:-1" "${2:-${1%.*}.gif}"; }
