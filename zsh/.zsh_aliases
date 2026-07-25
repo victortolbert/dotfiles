@@ -204,6 +204,18 @@ alias l='pnpm lint'
 alias pl='pnpm lint'
 alias lf='pnpm lint:fix'
 alias plf='pnpm lint:fix'
+
+# npm globals live in ~/.local/lib/node_modules, but npm's default prefix is the
+# version-pinned Vite+ node runtime — so a plain `npm i -g` installs somewhere
+# ~/.local/bin then shadows, and the old copy silently keeps winning.
+# Setting `prefix` in ~/.npmrc would fix that globally, but nvm refuses to load
+# when that option is set, so use this wrapper instead of the bare command.
+#   npmg install fallow@latest   |   npmg uninstall fallow   |   npmg ls   |   npmg outdated
+# oh-my-zsh's npm plugin claims `npmg` as an alias, and zsh won't define a
+# function over an existing alias — it parse-errors and aborts the rest of this
+# file — so clear the alias first.
+unalias npmg 2>/dev/null
+npmg() { npm -g --prefix "$HOME/.local" "$@"; }
 alias tc='pnpm typecheck'
 alias ptc='pnpm typecheck'
 alias pab='pnpm approve-builds'
