@@ -328,12 +328,14 @@
   "explorer.openEditors.visible": 1,
   "explorer.sortOrder": "foldersNestsFiles",
   "explorer.sortOrderLexicographicOptions": "upper",
-  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "extensions.autoUpdate": "on",
   "extensions.confirmedUriHandlerExtensionIds": ["ms-dotnettools.dotnet-interactive-vscode"],
   "extensions.ignoreRecommendations": true,
   "files.associations": {
-    "*.html": "html"
+    "*.html": "html",
+    ".zsh_aliases": "shellscript"
   },
+  "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 4000,
   "files.defaultLanguage": "${activeEditorLanguage}",
   "files.eol": "\n",
@@ -469,6 +471,7 @@
   "prettier.enable": false,
   "prettier.semi": false,
   "prettier.singleQuote": true,
+  "python.terminal.useEnvFile": true,
   "quokka.automaticRestart": true,
   "quokka.automaticStartRegex": "scratch(pad)?\\.(ts|js|tsx|jsx)$",
   // "quokka.startViewStatusBar": false,
@@ -587,7 +590,7 @@
   // "volar.completion.preferredTagNameCase": "pascal",
   "where-am-i.colorful": false,
   "window.autoDetectColorScheme": true,
-  "window.closeWhenEmpty": true,
+  "window.closeWhenEmpty": false,
   "window.dialogStyle": "custom",
   "window.nativeFullScreen": false,
   // "window.nativeTabs": true, // this is great, macOS only
@@ -701,4 +704,14 @@
   "application.shellEnvironmentResolutionTimeout": 50,
   "playwright.pickLocatorCopyToClipboard": false,
   "workbench.preferredDarkColorTheme": "Cobalt2",
+  "roo-cline.debug": false,
+  "roo-cline.allowedCommands": [
+    "git log",
+    "git diff",
+    "git show"
+  ],
+  "roo-cline.deniedCommands": [],
+  "terminal.integrated.initialHint": false,
+  "liveServer.settings.donotVerifyTags": true,
+  "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg"
 }
