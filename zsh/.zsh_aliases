@@ -278,6 +278,59 @@ alias aem-status='ps -ef | grep aem65-author-p4502.jar | grep -v grep'
 alias aem-log='tail -f ~/aem/author/crx-quickstart/logs/error.log'
 alias aem-errors='grep -i "error\|exception" ~/aem/author/crx-quickstart/logs/error.log | tail -50'
 
+# --- AEM local-dev helpers (author @ localhost:4502, admin/admin) ---
+export AEM_HOST="${AEM_HOST:-http://localhost:4502}"
+export AEM_AUTH="${AEM_AUTH:-admin:admin}"
+export AEM_CRX="$HOME/aem/author/crx-quickstart"
+
+# live error tail, filtered (Ctrl-C to stop); aem-grep <regex> for a custom pattern
+alias aem-tail='tail -f "$AEM_CRX/logs/error.log" | grep -iE "ERROR|Exception|cannot"'
+aem-grep() { tail -f "$AEM_CRX/logs/error.log" | grep -iE "$*"; }
+
+# CSRF token for POSTs to /content /apps /etc:  curl ... -H "CSRF-Token: $(aem-token)"
+aem-token() { curl -s -u "$AEM_AUTH" "$AEM_HOST/libs/granite/csrf/token.json" | python3 -c 'import sys,json;print(json.load(sys.stdin)["token"])'; }
+
+# render-check a page: aem-check /content/.../page  -> HTTP code + server-error count
+aem-check() {
+  curl -s -u "$AEM_AUTH" -o /tmp/aem-check.html -w "HTTP %{http_code}  %{size_download}b" "$AEM_HOST$1.html"
+  echo "  server-errors: $(grep -ciE 'cannot be resolved|cannot be correctly instantiated|NoClassDefFound|NullPointer|Cannot serve|SightlyException' /tmp/aem-check.html)"
+}
+
+# bundle state(s) by symbolic-name substring: aem-bundle common-elements
+aem-bundle() {
+  curl -s -u "$AEM_AUTH" "$AEM_HOST/system/console/bundles.json" | python3 -c "
+import sys,json,re
+q=re.compile(r'$1', re.I)
+for b in json.load(sys.stdin).get('data', []):
+    sn=b.get('symbolicName') or ''
+    if q.search(sn): print('{:10} {:>4}  {} {}'.format(b.get('state'), b.get('id'), sn, b.get('version')))
+"
+}
+
+# deploy an OSGi bundle jar via Felix (installs + starts): aem-deploy-bundle target/foo.jar
+aem-deploy-bundle() {
+  curl -s -u "$AEM_AUTH" -F action=install -F start=start -F bundlestartlevel=20 -F refreshPackages=true \
+    -F bundlefile=@"$1" "$AEM_HOST/system/console/bundles" -o /dev/null -w "deploy %{http_code}  (verify: aem-bundle <name>)\n"
+}
+
+# install a FileVault content package (.zip) via Package Manager: aem-pkg path/to.zip
+aem-pkg() {
+  curl -s -u "$AEM_AUTH" -F file=@"$1" -F name="$(basename "$1" .zip)" -F force=true -F install=true \
+    "$AEM_HOST/crx/packmgr/service.jsp" | tr '>' '>\n' | grep -iE "<status code|Package installed" | head -3
+}
+
+# open UIs
+alias aem-open='open "$AEM_HOST/"'
+alias aem-console='open "$AEM_HOST/system/console/bundles"'
+alias aem-crxde='open "$AEM_HOST/crx/de/index.jsp"'
+
+# Ivy common-elements: build + deploy the core bundle (JDK 8 via mise), then live-sync ui.apps
+aem-build-core() {
+  ( cd ~/Projects/ivy && mise exec -- mvn -B -ntp clean install -pl common-elements-aem-parent/core -am -DskipTests ) \
+    && aem-deploy-bundle "$(ls ~/Projects/ivy/common-elements-aem-parent/core/target/common-elements.core-*.jar | head -1)"
+}
+alias aem-sync='aemsync -t "http://$AEM_AUTH@localhost:4502" -w ~/Projects/ivy/common-elements-aem-parent/ui.apps/src/main/content/jcr_root'
+
 # AEM project archetype (interactive)
 alias aem-new='mvn archetype:generate \
   -DarchetypeGroupId=com.adobe.aem \
@@ -380,10 +433,6 @@ alias ports='lsof -i -P -n | grep LISTEN'
 alias whois='whois -h whois-servers.net'
 alias weather='curl -4 http://wttr.in'
 alias HEAD='curl -I'
-
-killport() {
-  kill $(lsof -t -i :$1) 2>/dev/null || echo "Port $1 not in use"
-}
 
 # ===========================================
 # Process Management
@@ -496,3 +545,19 @@ towav() { ffmpeg -i "$1" "${1%.*}.wav"; }
 vcut() { ffmpeg -i "$1" -ss "$2" -to "$3" -c copy "${4:-${1%.*}_clip.${1##*.}}"; }
 # Make a gif:  togif input.mp4 [out.gif]
 togif() { ffmpeg -i "$1" -vf "fps=12,scale=480:-1" "${2:-${1%.*}.gif}"; }
+
+# Kill whatever is listening on one or more TCP ports:  killport 3000   |   killport 3000 4321
+killport() {
+  if [ $# -eq 0 ]; then
+    echo "usage: killport <port> [port...]" >&2
+    return 1
+  fi
+  local pids
+  pids=$(lsof -t $(for p in "$@"; do printf -- "-itcp:%s " "$p"; done) 2>/dev/null)
+  if [ -z "$pids" ]; then
+    echo "no process listening on: $*"
+    return 0
+  fi
+  echo "$pids" | xargs kill -9 2>/dev/null
+  echo "killed port(s) $*: $(echo $pids | tr '\n' ' ')"
+}
