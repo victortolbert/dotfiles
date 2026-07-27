@@ -293,5 +293,19 @@
             "text": "\\\r\n"
         },
         "when": "terminalFocus"
+    },
+    /**
+     * Markdown All in One — mirror bindings onto the MDC (Markdown Components)
+     * language so Cmd+B / Cmd+I work inside .mdc / MDC-mode files too.
+     */
+    {
+        "key": "cmd+b",
+        "command": "markdown.extension.editing.toggleBold",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == 'mdc'"
+    },
+    {
+        "key": "cmd+i",
+        "command": "markdown.extension.editing.toggleItalic",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == 'mdc'"
     }
 ]
