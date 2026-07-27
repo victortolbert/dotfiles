@@ -11,36 +11,69 @@ Vic's terminal and dev environment configuration.
 
 | Path | Purpose |
 |------|---------|
-| `ghostty/config` | Ghostty terminal (Cobalt2, JetBrains Mono, splits, visor) |
-| `zsh/.zshrc` | Main ZSH config (oh-my-zsh, fzf, Java, paths, sources .zsh_aliases) |
-| `zsh/.zsh_aliases` | 497-line consolidated aliases & functions (navigation, git, npm/pnpm/bun, docker, AEM, python/uv, helpers) |
+| `zsh/.zshrc` | Main ZSH config (oh-my-zsh, fzf, mise, paths; sources `~/.zsh_aliases` and `~/.zsh_secrets`) |
+| `zsh/.zshenv` | Sourced by *all* zsh invocations; dedupes `PATH`, machine-aware 1Password config |
+| `zsh/.zsh_aliases` | 563 lines of aliases & functions (navigation, git, npm/pnpm/bun, docker, AEM, python/uv, ffmpeg, helpers) |
 | `zsh/custom/themes/cobalt2.zsh-theme` | Oh-My-ZSH Cobalt2 theme |
-| `git/.gitconfig` | Git aliases, colors, config |
-| `vscode/` | VS Code settings, keybindings |
-| `Brewfile` | Homebrew formulae + casks (253 from milton) |
+| `git/.gitconfig` | Git aliases, colors, credential helpers |
+| `ghostty/config` | Ghostty terminal (Cobalt2, JetBrains Mono, splits, visor) |
+| `iterm2/` | Preferences plist (XML) + a README on why the plist can't just be symlinked |
+| `vscode/` | VS Code — settings, keybindings, `mcp.json`, 8 snippet files |
+| `vscode-insiders/` | Same for VS Code Insiders, tracked separately |
+| `zed/` | Zed settings + `themes/tailwind-css.json` |
+| `karabiner/karabiner.json` | Karabiner-Elements key remapping |
+| `mise/config.toml` | Runtime pins (ruby 3.3.6, java 21) |
+| `macos/defaults.sh` | `defaults write` system tweaks, with `current-defaults-reference.txt` as the extracted baseline |
+| `bin/` | `try` (scratch-project launcher), `migrate-fonts`, and `lib/` Ruby helpers |
+| `Brewfile` | Homebrew: 27 formulae, 16 casks, 1 tap |
+| `Brewfile.bak` | 251-entry snapshot kept when the Brewfile was trimmed for a new Mac (`34b7bce`) |
 | `install.sh` | Symlink installer (backs up existing files) |
 
 ### File structure
 ```
 dotfiles/
 ├── Brewfile
+├── Brewfile.bak            ← 251-entry pre-trim snapshot
 ├── README.md
 ├── install.sh
+├── bin/
+│   ├── try                 ← scratch-project launcher (`try init` runs in .zshrc)
+│   ├── migrate-fonts
+│   └── lib/                ← fuzzy.rb, tui.rb
 ├── ghostty/
 │   └── config
 ├── git/
 │   └── .gitconfig
+├── iterm2/
+│   ├── README.md           ← import/export steps
+│   └── com.googlecode.iterm2.plist
+├── karabiner/
+│   └── karabiner.json
+├── macos/
+│   ├── defaults.sh
+│   └── current-defaults-reference.txt
+├── mise/
+│   └── config.toml
 ├── vscode/
 │   ├── settings.json
-│   └── keybindings.json
+│   ├── keybindings.json
+│   ├── mcp.json
+│   └── snippets/           ← blade, js, jsx, md, php, svelte, vue, global
+├── vscode-insiders/        ← same layout as vscode/
+├── zed/
+│   ├── settings.json
+│   └── themes/
 └── zsh/
-    ├── .zshenv             ← sourced by ALL zsh (machine-aware 1Password config)
+    ├── .zshenv             ← sourced by ALL zsh (PATH dedupe, machine-aware 1Password)
     ├── .zshrc              ← sources ~/.zsh_aliases and ~/.zsh_secrets
-    ├── .zsh_aliases        ← 497 lines of aliases & functions
+    ├── .zsh_aliases        ← 563 lines of aliases & functions
     └── custom/
         └── themes/
             └── cobalt2.zsh-theme
 ```
+
+Not in this repo, but referenced by it: `~/.zsh_secrets` (credentials, see
+[Secrets](#secrets)) and `~/.zshrc.local` (per-machine overrides, milton only).
 
 ### Machine behavior
 
