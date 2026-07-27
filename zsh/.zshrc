@@ -125,9 +125,9 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
 # Herd injected PHP binary.
@@ -177,24 +177,18 @@ export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
 # Herd injected PHP 8.5 configuration.
 export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
-export PATH="$HOME/.local/bin:$PATH"
 
 # OpenClaw Completion
 [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
 
-# 1Password secrets — only auto-fetch on milton (headless, has service account token)
-# On peter and brian, use `load-secrets` alias to fetch on-demand via Touch ID
-case "$(hostname -s)" in
-  milton)
-    export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password" 2>/dev/null)
-    export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password" 2>/dev/null)
-    export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password" 2>/dev/null)
-    ;;
-  peter|brian)
-    alias load-secrets='export ELEVENLABS_API_KEY=$(op read "op://Milton/ElevenLabs API Key/password") && export OPENAI_API_KEY=$(op read "op://Milton/OpenAI API Key/password") && export NOTION_API_KEY=$(op read "op://Milton/Notion API Key/password") && echo "✅ Secrets loaded via 1Password"'
-    ;;
-esac
+# Secrets — this file is PUBLIC (github.com/victortolbert/dotfiles), so no
+# credential may ever live here, commented out or otherwise. They sit in
+# ~/.zsh_secrets (mode 600, in $HOME which is not a git repo, so it cannot be
+# staged by accident). That file also holds the 1Password `op read` block and
+# the `load-secrets` function; migrating a key to op is a one-line edit there
+# and needs no change to this file.
+[[ -f "$HOME/.zsh_secrets" ]] && source "$HOME/.zsh_secrets"
 
 export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 
@@ -254,4 +248,30 @@ export PATH="$HOME/.bin:$PATH"
 # Docker CLI completions (fpath only; compinit already called by Oh My Zsh)
 fpath=($HOME/.docker/completions $fpath)
 
-eval "$(try init ~/src/tries)"
+# eval "$(rbenv init - zsh)"
+eval "$(mise activate zsh)"
+eval "$(try init)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/victortolbert/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/victortolbert/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY
+
+
+# Herd injected PHP binary.
+export PATH="/Users/victortolbert/Library/Application Support/Herd/bin/":$PATH
+
+# Pi
+export PATH="/Users/victortolbert/.vite-plus/js_runtime/node/24.16.0/bin:$PATH"
