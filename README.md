@@ -5,6 +5,7 @@ Vic's terminal and dev environment configuration.
 ## Machines
 - **milton** — Mac mini (always-on server, OpenClaw)
 - **peter** — Personal MacBook (primary dev)
+- **brian** — MacBook (primary dev)
 
 ## What's here
 
@@ -34,7 +35,7 @@ dotfiles/
 │   └── keybindings.json
 └── zsh/
     ├── .zshenv             ← sourced by ALL zsh (machine-aware 1Password config)
-    ├── .zshrc              ← sources ~/.zsh_aliases + machine-aware op read
+    ├── .zshrc              ← sources ~/.zsh_aliases and ~/.zsh_secrets
     ├── .zsh_aliases        ← 497 lines of aliases & functions
     └── custom/
         └── themes/
@@ -43,10 +44,10 @@ dotfiles/
 
 ### Machine behavior
 
-| | Milton (server) | Peter (laptop) |
+| | Milton (server) | Peter / Brian (laptops) |
 |---|---|---|
 | **1Password** | Service account, no Touch ID | Desktop app + Touch ID |
-| **API keys** | Auto-loaded at shell startup | `load-secrets` alias on demand |
+| **API keys** | Auto-loaded at shell startup | `load-secrets` on demand |
 | **`.zshrc.local`** | Has `OP_SERVICE_ACCOUNT_TOKEN` | Doesn't exist (not needed) |
 | **`.zshenv`** | Sets `OP_BIOMETRIC_UNLOCK_ENABLED=false` | Skips (hostname check) |
 
@@ -62,11 +63,67 @@ The installer backs up existing files before symlinking.
 
 ## Secrets
 
-No API keys in this repo. Secrets are managed via 1Password CLI:
+**This repo is public. Nothing tracked here may contain a credential — including
+commented-out ones.** A `#` is not redaction; a commented key is just as readable
+to anyone who opens the file on github.com, and `git` keeps it forever once
+committed.
+
+### `~/.zsh_secrets`
+
+Credentials live in `~/.zsh_secrets`, which `.zshrc` sources if present:
 
 ```bash
-export OPENAI_API_KEY=$(op read "op://OpenClaw/OpenAI/credential")
+[[ -f "$HOME/.zsh_secrets" ]] && source "$HOME/.zsh_secrets"
 ```
+
+It deliberately sits in `$HOME` rather than in this repo — `$HOME` is not a git
+repo, so the file cannot be staged by accident, and no `.gitignore` entry has to
+be trusted to hold the line. Keep it at mode `600`:
+
+```bash
+chmod 600 ~/.zsh_secrets
+```
+
+### Backup and restore
+
+`~/.zsh_secrets` is untracked, so nothing else backs it up. It is stored in
+1Password as a document, `zsh secrets (brian)` in the `Brian` vault:
+
+```bash
+# restore onto a new machine
+op document get "zsh secrets (brian)" --out ~/.zsh_secrets && chmod 600 ~/.zsh_secrets
+
+# verify the stored copy still matches (prints nothing sensitive)
+op document get "zsh secrets (brian)" | diff - ~/.zsh_secrets && echo identical
+
+# refresh after rotating a key — the document is a snapshot, not a sync
+op document edit "zsh secrets (brian)" ~/.zsh_secrets
+```
+
+### Migrating a key to `op read`
+
+The end state is no literal values at all: one 1Password item per credential,
+read at shell start, so rotation happens in one place and there is no document
+to keep refreshing. `~/.zsh_secrets` carries a commented `op read` block ready
+for this. Per key:
+
+```bash
+op read "op://Brian/OpenAI API Key/password"   # 1. verify the item resolves first
+```
+
+then add the line and delete the literal above it:
+
+```bash
+export OPENAI_API_KEY=$(op read "op://Brian/OpenAI API Key/password" 2>/dev/null)
+```
+
+Verify before trusting it — `op read` failures are swallowed by `2>/dev/null`
+and leave the variable silently empty.
+
+**Requires CLI integration**: 1Password app → Settings → Developer → *Integrate
+with 1Password CLI*. Without it, `op` can only authenticate through a shell
+session token from `op signin`, which does not carry across shells — so every
+new terminal would stall on the `op read` calls.
 
 ### Machine-specific config (`~/.zshrc.local`)
 
