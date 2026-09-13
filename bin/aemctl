@@ -1,0 +1,230 @@
+#!/usr/bin/env bash
+#
+# aemctl — start, stop and identify AEM instances by NAME, never by port.
+#
+# The problem this exists for, stated once:
+#
+#   `crx-quickstart/bin/start` defaults to port 4502 regardless of which
+#   instance directory it lives in. So starting the AEMaaCS SDK the obvious way
+#   boots it on the AEM 6.5 author's port — a different product line, with a
+#   21 GB repository and a different Java. That happened on 2026-09-13, and the
+#   only reason it was caught is that a downstream tool hardcodes 4602 and could
+#   not reach the instance.
+#
+#   The shell already had `aem-start`, `aem-stop`, `aem-status`, `AEM_HOST` and
+#   `AEM_CRX`, and every one of them silently meant "6.5 on 4502". The SDK had
+#   nothing. An instance you cannot name is an instance you address by port, and
+#   a port you type by hand is a port you eventually type wrong.
+#
+# The rule: PORT IS DERIVED FROM THE NAME. It is never a flag, never a default,
+# and never inherited from a start script.
+#
+#   author  AEM 6.5              4502   ~/aem/author            Java 11
+#   sdk     AEM as a Cloud Svc   4602   ~/aem/aemaacs-author    Java 21
+#
+# Java comes from each directory's own mise.toml. The two cannot share a JDK —
+# 6.5 is supported on 8 or 11 and never 21; the 2026.8 SDK quickstart refuses to
+# boot on anything but 21 — which is the second reason they cannot share a
+# directory, the first being the repository.
+#
+# Usage:
+#   aemctl start   author|sdk
+#   aemctl stop    author|sdk
+#   aemctl restart author|sdk
+#   aemctl status  [author|sdk]     default: both
+#   aemctl ready   author|sdk       block until it answers
+#   aemctl url     author|sdk
+#   aemctl log     author|sdk       tail -f the error log
+#   aemctl doctor                   what is listening, and is it what it should be
+
+set -euo pipefail
+
+# --- the registry, and the only place any of these facts appear ---------------
+instance_dir()  { case "$1" in author) echo "$HOME/aem/author" ;; sdk) echo "$HOME/aem/aemaacs-author" ;; esac; }
+instance_port() { case "$1" in author) echo 4502 ;; sdk) echo 4602 ;; esac; }
+instance_jar()  { case "$1" in author) echo 'aem65-author-p4502\.jar' ;; sdk) echo 'cq-quickstart-cloudready.*\.jar' ;; esac; }
+instance_desc() { case "$1" in author) echo 'AEM 6.5 author' ;; sdk) echo 'AEMaaCS SDK author' ;; esac; }
+
+NAMES="author sdk"
+
+die() { printf 'aemctl: %s\n' "$*" >&2; exit 1; }
+
+require_name() {
+  [ $# -ge 1 ] || die "which instance? one of: $NAMES"
+  case " $NAMES " in *" $1 "*) return 0 ;; esac
+  die "unknown instance '$1'. Known: $NAMES"
+}
+
+# The pid of a named instance, or empty.
+#
+# Matched by the instance's OWN jar, so two running instances are never confused
+# for one another. The `ps -p N -o comm=` form is deliberate: in the multi-column
+# form macOS truncates COMM to 16 characters and it never matches */java.
+instance_pid() {
+  local name=$1 p
+  for p in $(pgrep -f "$(instance_jar "$name")" 2>/dev/null || true); do
+    # `java` AND `*/java`. The shell's older `_aem_pid` matched only the second,
+    # which is what `ps -o comm=` reports for a path-invoked JVM — but under
+    # `mise exec` it reports a bare `java`, so that form silently found nothing.
+    case "$(ps -p "$p" -o comm= 2>/dev/null || true)" in
+      java|*/java) echo "$p"; return 0 ;;
+    esac
+  done
+  return 1
+}
+
+# The pid listening on a port, whatever it is.
+port_pid() { lsof -nP -iTCP:"$1" -sTCP:LISTEN -t 2>/dev/null | head -1 || true; }
+
+# What is actually on a port, named if we recognise it.
+port_owner() {
+  local port=$1 pid name
+  pid=$(port_pid "$port"); [ -n "$pid" ] || { echo "-"; return; }
+  for name in $NAMES; do
+    if [ "$(instance_pid "$name" 2>/dev/null || true)" = "$pid" ]; then
+      echo "$name"; return
+    fi
+  done
+  echo "pid $pid (not an aemctl instance)"
+}
+
+cmd_start() {
+  require_name "${1:-}"
+  local name=$1 dir port pid owner
+  dir=$(instance_dir "$name"); port=$(instance_port "$name")
+  [ -d "$dir" ] || die "no such directory: $dir"
+
+  if pid=$(instance_pid "$name"); then
+    echo "$(instance_desc "$name") already running (pid $pid) on :$port"
+    return 0
+  fi
+
+  owner=$(port_owner "$port")
+  [ "$owner" = "-" ] || die ":$port is already taken by $owner — refusing to start $name on top of it"
+
+  case "$name" in
+    sdk)
+      # CQ_PORT is the whole point. Without it bin/start uses 4502, which is the
+      # 6.5 author's port. Passing it explicitly is what makes this deterministic.
+      ( cd "$dir" && CQ_PORT="$port" nohup mise exec -- ./crx-quickstart/bin/start \
+          >> crx-quickstart/logs/nohup.out 2>&1 & )
+      ;;
+    author)
+      # The 6.5 invocation, with its own heap, its GC, its --add-opens set and
+      # JDWP on 5005. Detached via ( ... & ) so closing the terminal does not
+      # take the JVM with it.
+      ( cd "$dir" && nohup mise exec -- java \
+          -server -Xms2g -Xmx6g -XX:+UseG1GC \
+          -Djava.awt.headless=true \
+          -Djava.locale.providers=CLDR,JRE,SPI \
+          -Dsling.run.modes=author,crx3,crx3tar \
+          -Dsling.properties=conf/sling.properties \
+          -Doak.segment.msync=true \
+          --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
+          --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
+          --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
+          --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
+          --add-opens=java.base/java.lang=ALL-UNNAMED \
+          --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
+          -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+          -jar aem65-author-p4502.jar -p "$port" -nointeractive \
+          >> crx-quickstart/logs/nohup.out 2>&1 & )
+      ;;
+  esac
+
+  echo "$(instance_desc "$name") starting detached on http://localhost:$port"
+  echo "  ready:  aemctl ready $name"
+  echo "  logs:   aemctl log $name"
+  [ "$name" = author ] && echo "  debug:  localhost:5005"
+  return 0
+}
+
+cmd_stop() {
+  require_name "${1:-}"
+  local name=$1 pid i=0
+  pid=$(instance_pid "$name") || { echo "$(instance_desc "$name") not running"; return 0; }
+  echo "stopping $(instance_desc "$name") (pid $pid) — waiting for ordered shutdown…"
+  kill -TERM "$pid"
+  while kill -0 "$pid" 2>/dev/null && [ "$i" -lt 180 ]; do sleep 1; i=$((i+1)); done
+  if kill -0 "$pid" 2>/dev/null; then
+    echo "still alive after ${i}s. Escalate only if you must: kill -9 $pid" >&2
+    return 1
+  fi
+  echo "stopped cleanly after ${i}s"
+}
+
+cmd_ready() {
+  require_name "${1:-}"
+  local name=$1 port i=0
+  port=$(instance_port "$name")
+  until curl -s -o /dev/null --max-time 5 "http://localhost:$port/libs/granite/core/content/login.html"; do
+    instance_pid "$name" >/dev/null || die "$(instance_desc "$name") is not running"
+    sleep 5; i=$((i+5))
+  done
+  echo "$(instance_desc "$name") ready on :$port after ~${i}s"
+}
+
+cmd_status() {
+  local names=${1:-$NAMES} name port pid state
+  printf '%-7s %-22s %-6s %-9s %s\n' NAME PRODUCT PORT STATE PID
+  for name in $names; do
+    require_name "$name"
+    port=$(instance_port "$name")
+    if pid=$(instance_pid "$name"); then
+      state=$(curl -s -o /dev/null --max-time 3 -w '%{http_code}' \
+        "http://localhost:$port/libs/granite/core/content/login.html" 2>/dev/null || echo 000)
+      case "$state" in 200|302|401) state=ready ;; 000) state=starting ;; *) state="http $state" ;; esac
+    else
+      pid=-; state=stopped
+    fi
+    printf '%-7s %-22s %-6s %-9s %s\n' "$name" "$(instance_desc "$name")" "$port" "$state" "$pid"
+  done
+}
+
+cmd_url() { require_name "${1:-}"; echo "http://localhost:$(instance_port "$1")"; }
+
+cmd_log() {
+  require_name "${1:-}"
+  exec tail -f "$(instance_dir "$1")/crx-quickstart/logs/error.log"
+}
+
+# Is each port held by the instance that owns it? This is the check that would
+# have caught an SDK booted on 4502.
+cmd_doctor() {
+  local name port owner bad=0
+  for name in $NAMES; do
+    port=$(instance_port "$name"); owner=$(port_owner "$port")
+    if [ "$owner" = "-" ]; then
+      printf ':%s  free (%s is stopped)\n' "$port" "$name"
+    elif [ "$owner" = "$name" ]; then
+      printf ':%s  OK — %s\n' "$port" "$(instance_desc "$name")"
+    else
+      printf ':%s  WRONG — held by %s, should be %s\n' "$port" "$owner" "$name"; bad=1
+    fi
+  done
+  for name in $NAMES; do
+    if pid=$(instance_pid "$name"); then
+      port=$(instance_port "$name")
+      if ! lsof -nP -iTCP:"$port" -sTCP:LISTEN -a -p "$pid" >/dev/null 2>&1; then
+        printf '%-7s running as pid %s but NOT listening on :%s — started on the wrong port?\n' "$name" "$pid" "$port"
+        bad=1
+      fi
+    fi
+  done
+  [ "$bad" -eq 0 ] && echo "all good" || return 1
+}
+
+case "${1:-}" in
+  start)   shift; cmd_start "$@" ;;
+  stop)    shift; cmd_stop "$@" ;;
+  restart) shift; require_name "${1:-}"; cmd_stop "$1"; cmd_start "$1" ;;
+  ready)   shift; cmd_ready "$@" ;;
+  status)  shift; cmd_status "$@" ;;
+  url)     shift; cmd_url "$@" ;;
+  log)     shift; cmd_log "$@" ;;
+  doctor)  cmd_doctor ;;
+  ''|-h|--help|help)
+    sed -n '3,40p' "$0" | sed 's|^# \{0,1\}||'
+    ;;
+  *) die "unknown command '${1}'. Try: aemctl help" ;;
+esac

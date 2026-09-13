@@ -218,7 +218,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "//": "Last update at 7/26/2026, 11:16:34 AM",
+    "//": "Last update at 9/13/2026, 7:50:46 AM",
     ".agent": ".agent, .claude, .cline, .codebuddy, .codex, .commandcode, .continue, .crush, .cursor, .factory, .gemini, .goose, .junie, .kilocode, .kiro, .kode, .mcpjam, .mux, .neovate, .opencode, .openhands, .pi, .pochi, .qoder, .qwen, .roo, .trae, .windsurf, .zencoder",
     ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
     ".env": "*.env, .env.*, .envrc, env.d.ts",
@@ -619,10 +619,10 @@
   "workbench.editor.tabCloseButton": "left",
   "workbench.editor.tabSizing": "shrink",
   "workbench.fontAliasing": "antialiased",
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.list.openMode": "singleClick",
   "workbench.list.smoothScrolling": true,
-  "workbench.preferredLightColorTheme": "Vitesse Light",
+  "workbench.preferredLightColorTheme": "Cobalt2",
   "workbench.sideBar.location": "right",
   "workbench.settings.editor": "json",
   "workbench.settings.applyToAllProfiles": [
@@ -683,8 +683,6 @@
   "claudeCode.preferredLocation": "panel",
   "wallaby.startAutomatically": false,
   "chat.viewSessions.orientation": "stacked",
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   "snyk.advanced.cliPath": "/Users/victortolbert/Library/Application Support/snyk/vscode-cli/snyk-macos-arm64",
   "snyk.securityAtInception.autoConfigureSnykMcpServer": true,
   "snyk.securityAtInception.executionFrequency": "On Code Generation",
@@ -713,5 +711,8 @@
   "roo-cline.deniedCommands": [],
   "terminal.integrated.initialHint": false,
   "liveServer.settings.donotVerifyTags": true,
-  "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg"
+  "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
+  "workbench.productIconTheme": "icons-carbon",
+  "claudeCode.useTerminal": true,
+  "workbench.activityBar.compact": true
 }

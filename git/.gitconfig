@@ -67,8 +67,12 @@
   submodule = log
 # [help]
 #   autocorrect = 1
-[credential]
-  helper = osxkeychain
+# [credential] helper = osxkeychain
+#   Intentionally not declared here. Homebrew's git ships
+#   /opt/homebrew/etc/gitconfig containing exactly this line, so declaring it
+#   again made git run `git credential-osxkeychain store` twice on every
+#   authenticated push — two "failed to store" errors per operation.
+#   Re-add it only on a machine whose git does not provide osxkeychain itself.
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential

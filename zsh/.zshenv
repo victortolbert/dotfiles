@@ -8,6 +8,11 @@
 # Claude Code terminals inherit an already-built PATH, then run .zshrc again).
 typeset -U path PATH
 
+# Personal commands from this repo. Anything dropped in dotfiles/bin becomes a
+# command on the next shell — keep them extensionless and executable, with any
+# shared helpers in bin/lib.
+path=("$HOME/Projects/dotfiles/bin" $path)
+
 # 1Password service account — headless access on milton only
 # On peter and brian, op CLI uses desktop app + Touch ID (default behavior)
 if [[ "$(hostname -s)" == "milton" ]]; then

@@ -1,0 +1,191 @@
+#!/bin/bash
+# ---------------------------------------------------------------------------
+# Day-one safety net for a new AWS account.
+#
+# Everything here runs INSIDE AWS. No credentials are stored anywhere else,
+# nothing depends on your laptop being on, and it all sits in the free tier.
+#
+# Usage:  ./aws-new-account-setup.sh you@example.com [monthly-budget-usd]
+#
+# Written 2026-08-09 after account 495580583406 quietly billed ~$13/month for
+# nine years and was compromised via a long-lived IAM access key.
+# ---------------------------------------------------------------------------
+set -uo pipefail
+
+EMAIL="${1:-}"
+BUDGET="${2:-5}"
+
+if [ -z "$EMAIL" ]; then
+  echo "usage: $0 <alert-email> [monthly-budget-usd]" >&2
+  exit 1
+fi
+
+echo "=== PREFLIGHT ==="
+ACCT=$(aws sts get-caller-identity --query Account --output text 2>&1) || {
+  echo "No working AWS credentials. Configure the CLI first." >&2; exit 1; }
+WHO=$(aws sts get-caller-identity --query Arn --output text)
+echo "  account: $ACCT"
+echo "  identity: $WHO"
+echo "  alerts to: $EMAIL"
+echo "  budget: \$$BUDGET/month"
+echo
+
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
+
+# ---------------------------------------------------------------------------
+# 1. BUDGET — emails you at 80% actual, 100% actual, and 100% forecasted.
+#    Forecasted is the important one: it fires BEFORE you're charged.
+# ---------------------------------------------------------------------------
+echo "=== 1. MONTHLY BUDGET (\$$BUDGET) ==="
+cat >"$TMP/budget.json" <<EOF
+{
+  "BudgetName": "monthly-cost-guard",
+  "BudgetLimit": {"Amount": "$BUDGET", "Unit": "USD"},
+  "TimeUnit": "MONTHLY",
+  "BudgetType": "COST"
+}
+EOF
+cat >"$TMP/notify.json" <<EOF
+[
+  {"Notification": {"NotificationType":"ACTUAL","ComparisonOperator":"GREATER_THAN","Threshold":80,"ThresholdType":"PERCENTAGE"},
+   "Subscribers":[{"SubscriptionType":"EMAIL","Address":"$EMAIL"}]},
+  {"Notification": {"NotificationType":"ACTUAL","ComparisonOperator":"GREATER_THAN","Threshold":100,"ThresholdType":"PERCENTAGE"},
+   "Subscribers":[{"SubscriptionType":"EMAIL","Address":"$EMAIL"}]},
+  {"Notification": {"NotificationType":"FORECASTED","ComparisonOperator":"GREATER_THAN","Threshold":100,"ThresholdType":"PERCENTAGE"},
+   "Subscribers":[{"SubscriptionType":"EMAIL","Address":"$EMAIL"}]}
+]
+EOF
+if aws budgets create-budget --account-id "$ACCT" \
+     --budget "file://$TMP/budget.json" \
+     --notifications-with-subscribers "file://$TMP/notify.json" 2>"$TMP/err"; then
+  echo "  ✓ budget created with 3 alert thresholds"
+else
+  grep -qi 'DuplicateRecord' "$TMP/err" \
+    && echo "  · budget already exists, skipping" \
+    || { echo "  ✗ failed:"; sed 's/^/    /' "$TMP/err"; }
+fi
+echo
+
+# ---------------------------------------------------------------------------
+# 2. COST ANOMALY DETECTION — ML-based. Catches a compromised key spinning up
+#    GPU instances or Bedrock calls, which a fixed threshold might miss until
+#    the month is over.
+# ---------------------------------------------------------------------------
+echo "=== 2. COST ANOMALY DETECTION ==="
+MON_ARN=$(aws ce create-anomaly-monitor --anomaly-monitor \
+  '{"MonitorName":"total-spend-by-service","MonitorType":"DIMENSIONAL","MonitorDimension":"SERVICE"}' \
+  --query MonitorArn --output text 2>"$TMP/err")
+if [ -n "$MON_ARN" ] && [ "$MON_ARN" != "None" ]; then
+  echo "  ✓ monitor: $MON_ARN"
+else
+  MON_ARN=$(aws ce get-anomaly-monitors \
+    --query 'AnomalyMonitors[?MonitorName==`total-spend-by-service`].MonitorArn' --output text 2>/dev/null)
+  [ -n "$MON_ARN" ] && echo "  · monitor already exists" \
+                    || { echo "  ✗ monitor failed:"; sed 's/^/    /' "$TMP/err"; }
+fi
+
+if [ -n "$MON_ARN" ] && [ "$MON_ARN" != "None" ]; then
+  cat >"$TMP/sub.json" <<EOF
+{
+  "SubscriptionName": "cost-anomaly-email",
+  "MonitorArnList": ["$MON_ARN"],
+  "Subscribers": [{"Type":"EMAIL","Address":"$EMAIL"}],
+  "Frequency": "IMMEDIATE",
+  "ThresholdExpression": {
+    "Dimensions": {
+      "Key": "ANOMALY_TOTAL_IMPACT_ABSOLUTE",
+      "MatchOptions": ["GREATER_THAN_OR_EQUAL"],
+      "Values": ["$BUDGET"]
+    }
+  }
+}
+EOF
+  if aws ce create-anomaly-subscription \
+       --anomaly-subscription "file://$TMP/sub.json" >/dev/null 2>"$TMP/err"; then
+    echo "  ✓ email subscription created (fires on anomalies >= \$$BUDGET)"
+  else
+    grep -qi 'already exists\|Duplicate' "$TMP/err" \
+      && echo "  · subscription already exists" \
+      || { echo "  ✗ subscription failed:"; sed 's/^/    /' "$TMP/err"; }
+  fi
+fi
+echo
+
+# ---------------------------------------------------------------------------
+# 3. CLOUDTRAIL — the single biggest gap last time. Without a trail, history
+#    is capped at 90 days and an incident older than that is unreconstructable.
+# ---------------------------------------------------------------------------
+echo "=== 3. CLOUDTRAIL (multi-region) ==="
+BUCKET="cloudtrail-${ACCT}-audit"
+if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+  echo "  · bucket $BUCKET already exists"
+else
+  aws s3api create-bucket --bucket "$BUCKET" --region us-east-1 >/dev/null 2>&1 \
+    && echo "  ✓ bucket $BUCKET created" || echo "  ✗ bucket creation failed"
+  aws s3api put-public-access-block --bucket "$BUCKET" \
+    --public-access-block-configuration \
+    BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true 2>/dev/null
+fi
+
+cat >"$TMP/policy.json" <<EOF
+{"Version":"2012-10-17","Statement":[
+ {"Sid":"AWSCloudTrailAclCheck","Effect":"Allow",
+  "Principal":{"Service":"cloudtrail.amazonaws.com"},
+  "Action":"s3:GetBucketAcl","Resource":"arn:aws:s3:::$BUCKET"},
+ {"Sid":"AWSCloudTrailWrite","Effect":"Allow",
+  "Principal":{"Service":"cloudtrail.amazonaws.com"},
+  "Action":"s3:PutObject","Resource":"arn:aws:s3:::$BUCKET/AWSLogs/$ACCT/*",
+  "Condition":{"StringEquals":{"s3:x-amz-acl":"bucket-owner-full-control"}}}
+]}
+EOF
+aws s3api put-bucket-policy --bucket "$BUCKET" --policy "file://$TMP/policy.json" 2>/dev/null \
+  && echo "  ✓ bucket policy applied"
+
+if aws cloudtrail create-trail --name account-audit-trail \
+     --s3-bucket-name "$BUCKET" --is-multi-region-trail \
+     --region us-east-1 >/dev/null 2>"$TMP/err"; then
+  aws cloudtrail start-logging --name account-audit-trail --region us-east-1 2>/dev/null
+  echo "  ✓ trail created and logging started"
+else
+  grep -qi 'already exists' "$TMP/err" \
+    && { aws cloudtrail start-logging --name account-audit-trail --region us-east-1 2>/dev/null
+         echo "  · trail already exists, logging ensured"; } \
+    || { echo "  ✗ trail failed:"; sed 's/^/    /' "$TMP/err"; }
+fi
+echo
+
+# ---------------------------------------------------------------------------
+# 4. AUDIT — flag the exact conditions that caused the last compromise.
+# ---------------------------------------------------------------------------
+echo "=== 4. CREDENTIAL AUDIT ==="
+ROOTKEYS=$(aws iam get-account-summary --query 'SummaryMap.AccountAccessKeysPresent' --output text 2>/dev/null)
+ROOTMFA=$(aws iam get-account-summary --query 'SummaryMap.AccountMFAEnabled' --output text 2>/dev/null)
+[ "$ROOTKEYS" = "0" ] && echo "  ✓ no root access keys" \
+                      || echo "  ✗ ROOT ACCESS KEYS PRESENT — delete them immediately"
+[ "$ROOTMFA" = "1" ] && echo "  ✓ root MFA enabled" \
+                     || echo "  ✗ ROOT MFA NOT ENABLED — enable it immediately"
+
+echo "  long-lived IAM user keys:"
+FOUND=0
+for u in $(aws iam list-users --query 'Users[].UserName' --output text 2>/dev/null); do
+  for k in $(aws iam list-access-keys --user-name "$u" \
+               --query 'AccessKeyMetadata[].AccessKeyId' --output text 2>/dev/null); do
+    echo "    ⚠ $u / $k  — prefer IAM Identity Center over static keys"
+    FOUND=1
+  done
+done
+[ "$FOUND" = "0" ] && echo "    ✓ none — good"
+echo
+
+echo "=== DONE ==="
+echo
+echo "Two things the CLI cannot do — finish these in the console:"
+echo "  1. Billing → Billing preferences → enable 'Receive AWS Free Tier alerts'"
+echo "     and 'Receive Billing Alerts'."
+echo "  2. Confirm the AWS Budgets / Cost Anomaly subscription emails sent to"
+echo "     $EMAIL. Unconfirmed subscriptions never deliver."
+echo
+echo "Strongly recommended: use IAM Identity Center (SSO) for human access and"
+echo "IAM roles for services. Long-lived access keys are what got the last"
+echo "account compromised."

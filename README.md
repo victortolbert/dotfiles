@@ -24,7 +24,7 @@ Vic's terminal and dev environment configuration.
 | `karabiner/karabiner.json` | Karabiner-Elements key remapping |
 | `mise/config.toml` | Runtime pins (ruby 3.3.6, java 21) |
 | `macos/defaults.sh` | `defaults write` system tweaks, with `current-defaults-reference.txt` as the extracted baseline |
-| `bin/` | `try` (scratch-project launcher), `migrate-fonts`, and `lib/` Ruby helpers |
+| `bin/` | Commands on `PATH` (added in `.zshenv`) — `try` (scratch-project launcher), `aemctl` (AEM instances by name, never by port), `migrate-fonts`, `aws-new-account-setup`, and `lib/` Ruby helpers |
 | `Brewfile` | Homebrew: 27 formulae, 16 casks, 1 tap |
 | `Brewfile.bak` | 251-entry snapshot kept when the Brewfile was trimmed for a new Mac (`34b7bce`) |
 | `install.sh` | Symlink installer (backs up existing files) |

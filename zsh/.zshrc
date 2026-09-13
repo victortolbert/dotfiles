@@ -204,7 +204,7 @@ export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
 # Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
+[[ -f "$HOME/.vite-plus/env" ]] && source "$HOME/.vite-plus/env"
 
 
 # Herd injected PHP 8.4 configuration.
@@ -274,4 +274,30 @@ setopt SHARE_HISTORY
 export PATH="/Users/victortolbert/Library/Application Support/Herd/bin/":$PATH
 
 # Pi
-export PATH="/Users/victortolbert/.vite-plus/js_runtime/node/24.16.0/bin:$PATH"
+export PATH="$HOME/.vite-plus/js_runtime/node/24.19.0/bin:$PATH"
+
+# >>> railway initialize >>>
+source "$HOME/.railway/env"
+# <<< railway initialize <<<
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+# Added by Antigravity IDE
+export PATH="/Users/victortolbert/.antigravity-ide/antigravity-ide/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/victortolbert/.local/bin:$PATH"
+
+# Turso
+export PATH="$PATH:/Users/victortolbert/.turso"
+
+# uxlab — 1Password service account (unattended agent runs)
+if [ -f "$HOME/.config/op/uxlab-agent.env" ]; then
+  . "$HOME/.config/op/uxlab-agent.env"
+  export OP_SERVICE_ACCOUNT_TOKEN
+fi

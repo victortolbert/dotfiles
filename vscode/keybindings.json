@@ -226,11 +226,11 @@
     "command": "editor.action.nextMatchFindAction",
     "when": "findWidgetVisible"
   },
-  {
-    "key": "shift+enter",
-    "command": "editor.action.previousMatchFindAction",
-    "when": "findWidgetVisible"
-  },
+  // {
+  //   "key": "shift+enter",
+  //   "command": "editor.action.previousMatchFindAction",
+  //   "when": "findWidgetVisible"
+  // },
   /**
    * Open DevTools
    **/
@@ -307,5 +307,13 @@
         "key": "cmd+i",
         "command": "markdown.extension.editing.toggleItalic",
         "when": "editorTextFocus && !editorReadonly && editorLangId == 'mdc'"
-    }
+    },
+    // {
+    //     "key": "shift+enter",
+    //     "command": "workbench.action.terminal.sendSequence",
+    //     "args": {
+    //         "text": "\u001b\r"
+    //     },
+    //     "when": "terminalFocus"
+    // }
 ]
