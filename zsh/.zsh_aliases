@@ -287,88 +287,43 @@ ivyui() {
   php -S localhost:8080 -t ~/Projects
 }
 
-# AEM instance management
-# Print the AEM JVM's pid, or nothing.
-# `pgrep -f` alone is not enough: a wrapper shell's command line also contains the
-# jar name, so it can return the wrapper and you end up killing the shell while
-# leaving AEM orphaned. Confirm each candidate is really the java binary.
-# Note this must use the PER-PID form `ps -p N -o comm=` — in the multi-column form
-# (`ps -eo pid,comm`) macOS truncates COMM to 16 chars, so it never matches /java.
-_aem_pid() {
-  local p
-  for p in $(pgrep -f 'aem65-author-p4502\.jar' 2>/dev/null); do
-    case "$(ps -p "$p" -o comm= 2>/dev/null)" in
-      */java) echo "$p"; return 0 ;;
-    esac
-  done
-  return 1
-}
+# AEM instance management — RETIRED 2026-09-13, see `aemctl`
+#
+# `aem-start`, `aem-stop`, `aem-ready`, `aem-status`, `aem-log`, `aem-errors`
+# and `_aem_pid` lived here and every one of them silently meant "AEM 6.5 on
+# 4502". The AEMaaCS SDK had no equivalents at all, which is why it eventually
+# got started with `crx-quickstart/bin/start` — a script that defaults to 4502
+# whichever instance directory it sits in — and booted on the 6.5 author's port.
+#
+# `bin/aemctl` replaces them. Instances are addressed BY NAME and the port is
+# derived from the name, never typed:
+#
+#   aemctl start|stop|restart|ready|status|url|log   author|sdk
+#   aemctl doctor      # is each port held by the instance that owns it?
+#
+#   author  AEM 6.5              4502   ~/aem/author           Java 11
+#   sdk     AEM as a Cloud Svc   4602   ~/aem/aemaacs-author   Java 21
+#
+# Two things the old versions got wrong, kept here because they cost time:
+#   - `_aem_pid` matched `ps -o comm=` ending in `*/java`. Under `mise exec` that
+#     reports a bare `java`, so the pattern silently found nothing.
+#   - `aem-status` grepped `ps -ef` for the 6.5 jar, so it reported "not running"
+#     for an SDK that was running perfectly well.
 
-# Start the author instance DETACHED, so closing this terminal doesn't kill AEM.
-# `( ... & )` orphans the JVM to init; the old foreground version died with its shell.
-# `mise exec` inside ~/aem/author picks up that dir's mise.toml (Java 11 — AEM 6.5
-# supports 8 or 11, never 21, and the global default here is 21).
-# jdwp: Java 9+ treats a bare `address=5005` as loopback-only, so the debugger port
-# is not reachable off this machine. Attach from VS Code / IntelliJ on port 5005.
-aem-start() {
-  local dir="$HOME/aem/author"
-  [ -d "$dir" ] || { echo "no such dir: $dir" >&2; return 1; }
-  [ -n "$(_aem_pid)" ] && { echo "AEM already running (pid $(_aem_pid))"; return 0; }
-  ( cd "$dir" && nohup mise exec -- java \
-      -server -Xms2g -Xmx6g -XX:+UseG1GC \
-      -Djava.awt.headless=true \
-      -Djava.locale.providers=CLDR,JRE,SPI \
-      -Dsling.run.modes=author,crx3,crx3tar \
-      -Dsling.properties=conf/sling.properties \
-      -Doak.segment.msync=true \
-      --add-opens=java.desktop/com.sun.imageio.plugins.jpeg=ALL-UNNAMED \
-      --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED \
-      --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED \
-      --add-opens=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED \
-      --add-opens=java.base/java.lang=ALL-UNNAMED \
-      --add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED \
-      -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
-      -jar aem65-author-p4502.jar -p 4502 -nointeractive \
-      >> crx-quickstart/logs/nohup.out 2>&1 & )
-  echo "AEM starting detached — ~90s to ready"
-  echo "  logs:   aem-log        ready: aem-ready"
-  echo "  debug:  localhost:5005 (attach from VS Code)"
-}
 
-# Graceful stop. Matches the JVM by its *comm* ending in /java, because any wrapper
-# shell's command line also contains the string "java" — a naive pgrep -f picks the
-# wrong pid and kills the wrapper while leaving AEM orphaned.
-aem-stop() {
-  local pid i=0
-  pid=$(_aem_pid)
-  [ -n "$pid" ] || { echo "AEM not running"; return 0; }
-  echo "stopping AEM (pid $pid) — waiting for ordered shutdown…"
-  kill -TERM "$pid" || return 1
-  while kill -0 "$pid" 2>/dev/null && [ $i -lt 180 ]; do sleep 1; i=$((i+1)); done
-  if kill -0 "$pid" 2>/dev/null; then
-    echo "still alive after ${i}s. Escalate only if you must: kill -9 $pid" >&2
-    return 1
-  fi
-  echo "AEM stopped cleanly after ${i}s"
-}
-
-# Block until the instance answers, so you can chain: aem-start && aem-ready && ...
-aem-ready() {
-  local i=0
-  until curl -s -o /dev/null -u "$AEM_AUTH" --max-time 5 "$AEM_HOST/system/console/bundles.json"; do
-    [ -n "$(_aem_pid)" ] || { echo "AEM is not running" >&2; return 1; }
-    sleep 5; i=$((i+5))
-  done
-  echo "AEM ready after ~${i}s"
-}
-alias aem-status='ps -ef | grep aem65-author-p4502.jar | grep -v grep'
-alias aem-log='tail -f ~/aem/author/crx-quickstart/logs/error.log'
-alias aem-errors='grep -i "error\|exception" ~/aem/author/crx-quickstart/logs/error.log | tail -50'
-
-# --- AEM local-dev helpers (author @ localhost:4502, admin/admin) ---
-export AEM_HOST="${AEM_HOST:-http://localhost:4502}"
+# --- AEM local-dev helpers -------------------------------------------------
+# The helpers below (aem-token, aem-check, aem-bundle, aem-pkg, aem-open, …) are
+# 6.5 and Maven tooling and are NOT retired. What changed on 2026-09-13 is that
+# they no longer hardcode one instance: AEM_INSTANCE names it and `aemctl url`
+# derives the port, so pointing them at the SDK is `AEM_INSTANCE=sdk aem-check …`
+# rather than editing a literal.
+export AEM_INSTANCE="${AEM_INSTANCE:-author}"
+# aemctl is the source of truth for the port. The inline fallback repeats the
+# same mapping ON PURPOSE: if aemctl is off PATH, a shell must still not hand you
+# the other instance's port, which is the whole failure being fixed here.
+export AEM_HOST="${AEM_HOST:-$(aemctl url "$AEM_INSTANCE" 2>/dev/null || printf 'http://localhost:%s' "$([ "$AEM_INSTANCE" = sdk ] && echo 4602 || echo 4502)")}"
 export AEM_AUTH="${AEM_AUTH:-admin:admin}"
-export AEM_CRX="$HOME/aem/author/crx-quickstart"
+export AEM_CRX="$HOME/aem/$([ "$AEM_INSTANCE" = sdk ] && echo aemaacs-author || echo author)/crx-quickstart"
 
 # live error tail, filtered (Ctrl-C to stop); aem-grep <regex> for a custom pattern
 alias aem-tail='tail -f "$AEM_CRX/logs/error.log" | grep -iE "ERROR|Exception|cannot"'

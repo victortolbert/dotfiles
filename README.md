@@ -13,7 +13,7 @@ Vic's terminal and dev environment configuration.
 |------|---------|
 | `zsh/.zshrc` | Main ZSH config (oh-my-zsh, fzf, mise, paths; sources `~/.zsh_aliases` and `~/.zsh_secrets`) |
 | `zsh/.zshenv` | Sourced by *all* zsh invocations; dedupes `PATH`, machine-aware 1Password config |
-| `zsh/.zsh_aliases` | 563 lines of aliases & functions (navigation, git, npm/pnpm/bun, docker, AEM, python/uv, ffmpeg, helpers) |
+| `zsh/.zsh_aliases` | Aliases & functions (navigation, git, npm/pnpm/bun, docker, AEM, python/uv, ffmpeg, helpers). AEM lifecycle lives in `bin/aemctl`; the helpers here follow `AEM_INSTANCE` (`author`\|`sdk`) |
 | `zsh/custom/themes/cobalt2.zsh-theme` | Oh-My-ZSH Cobalt2 theme |
 | `git/.gitconfig` | Git aliases, colors, credential helpers |
 | `ghostty/config` | Ghostty terminal (Cobalt2, JetBrains Mono, splits, visor) |
