@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# mv-project: rename a project folder along with the state other tools key by
+# its absolute path, so nothing loses track of it.
+#
+#   mv-project [--dry-run] <old-path> <new-path>
+#
+# Moves:
+#   - the folder itself
+#   - Claude Code's project dir (~/.claude/projects/<slug>: session history, memory)
+#   - the project's entry in ~/.claude.json (trust and per-project settings)
+#   - the project's Railway link in ~/.railway/config.json
+# Then lists any other config that still mentions the old path.
+#
+# Run it with no Claude Code session open in the project: a running session
+# keeps writing to the old Claude project dir and can rewrite ~/.claude.json.
+set -euo pipefail
+
+dry_run=false
+if [[ ${1:-} == --dry-run ]]; then
+  dry_run=true
+  shift
+fi
+if [[ $# -ne 2 ]]; then
+  echo "usage: mv-project [--dry-run] <old-path> <new-path>" >&2
+  exit 2
+fi
+
+old=$(cd "$1" 2>/dev/null && pwd -P) || { echo "mv-project: $1 is not a directory" >&2; exit 1; }
+parent=$(cd "$(dirname "$2")" 2>/dev/null && pwd -P) || { echo "mv-project: the parent of $2 doesn't exist" >&2; exit 1; }
+new=$parent/$(basename "$2")
+[[ -e $new ]] && { echo "mv-project: $new already exists; pick another name or move it first" >&2; exit 1; }
+
+# Claude Code names a project's state dir after its path, with every
+# character that isn't a letter or digit turned into a hyphen.
+slug() { printf '%s' "$1" | sed 's/[^a-zA-Z0-9]/-/g'; }
+claude_old=$HOME/.claude/projects/$(slug "$old")
+claude_new=$HOME/.claude/projects/$(slug "$new")
+claude_json=$HOME/.claude.json
+railway_json=$HOME/.railway/config.json
+stamp=$(date +%Y%m%d-%H%M%S)
+
+# Refuse while anything runs inside the project: its cwd would dangle, and a
+# Claude Code session there would recreate the old state dir.
+inside=$(lsof -a -d cwd -Fpcn 2>/dev/null | awk -v dir="$old" '
+  /^p/ { pid = substr($0, 2) } /^c/ { cmd = substr($0, 2) }
+  /^n/ { path = substr($0, 2); if (path == dir || index(path, dir "/") == 1) print "  " pid " " cmd " (" path ")" }')
+if [[ -n $inside ]]; then
+  echo "mv-project: these processes are running inside $old. Quit them first:" >&2
+  echo "$inside" >&2
+  $dry_run || exit 1
+  echo "(dry run: continuing so you can see the plan)" >&2
+fi
+[[ -e $claude_new ]] && { echo "mv-project: $claude_new already exists; merge or remove it by hand first" >&2; exit 1; }
+
+run() {
+  echo "+ $*"
+  $dry_run || "$@"
+}
+
+# Rewrites one key of a JSON object in place, keeping a timestamped backup.
+rekey_json() {
+  local file=$1 filter=$2
+  echo "+ rekey $file (backup: $file.bak-mv-project-$stamp)"
+  $dry_run && return
+  cp "$file" "$file.bak-mv-project-$stamp"
+  jq --arg old "$old" --arg new "$new" "$filter" "$file" > "$file.tmp-mv-project"
+  mv "$file.tmp-mv-project" "$file"
+}
+
+run mv "$old" "$new"
+
+if [[ -d $claude_old ]]; then
+  run mv "$claude_old" "$claude_new"
+else
+  echo "  (no Claude Code project dir at $claude_old)"
+fi
+
+if [[ -f $claude_json ]] && jq -e --arg old "$old" '.projects[$old]' "$claude_json" >/dev/null; then
+  rekey_json "$claude_json" '.projects[$new] = .projects[$old] | del(.projects[$old])'
+else
+  echo "  (no entry for $old in $claude_json)"
+fi
+
+if [[ -f $railway_json ]] && jq -e --arg old "$old" '.projects[$old]' "$railway_json" >/dev/null; then
+  rekey_json "$railway_json" '.projects[$new] = (.projects[$old] | .projectPath = $new) | del(.projects[$old])'
+else
+  echo "  (no Railway link for $old)"
+fi
+
+$dry_run && { echo "Dry run: nothing changed."; exit 0; }
+
+# Verify what matters: another process may have rewritten ~/.claude.json
+# from a stale copy while this ran.
+[[ -d $new ]] || { echo "mv-project: $new is missing after the move" >&2; exit 1; }
+if [[ -f $claude_json ]] && ! jq -e --arg new "$new" '.projects[$new]' "$claude_json" >/dev/null; then
+  echo "warning: ~/.claude.json has no entry for $new. A running Claude Code probably rewrote it." >&2
+  echo "         Harmless: the first session there will ask you to trust the folder again." >&2
+fi
+
+# Linked worktrees record the main checkout's absolute path, and it records theirs.
+if git -C "$new" rev-parse --git-dir >/dev/null 2>&1 && [[ $(git -C "$new" worktree list | wc -l) -gt 1 ]]; then
+  echo "+ git -C $new worktree repair"
+  git -C "$new" worktree repair
+fi
+
+echo "Moved $old -> $new"
+leftovers=$( {
+  grep -rIl --exclude='*.bak-mv-project-*' -F "$old" \
+    "$HOME/.codex" "$HOME/.config" "$HOME/.pi" "$HOME/.agents" "$HOME/.railway" "$HOME/.local/share/direnv" 2>/dev/null
+  # mise records trusted config files as symlinks to them.
+  find "$HOME/.local/state/mise/trusted-configs" -lname "$old/*" 2>/dev/null
+} || true)
+if [[ -n $leftovers ]]; then
+  echo "Other config still mentioning the old path (recent-workspace lists are cosmetic; re-run \`mise trust\` or \`direnv allow\` for those):"
+  sed 's/^/  /' <<<"$leftovers"
+fi
+echo "Inside the project, regenerate anything that stores absolute paths (for pnpm: pnpm install)."
