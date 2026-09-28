@@ -125,9 +125,9 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# Node versions are managed by Vite+ (sourced from .zshenv and again below).
+# Its shims read .nvmrc / .node-version / engines.node per project, so nvm
+# is no longer loaded. `vp env use <ver>` replaces `nvm use`.
 
 
 # Herd injected PHP binary.
@@ -273,8 +273,10 @@ setopt SHARE_HISTORY
 # Herd injected PHP binary.
 export PATH="/Users/victortolbert/Library/Application Support/Herd/bin/":$PATH
 
-# Pi
-export PATH="$HOME/.vite-plus/js_runtime/node/24.19.0/bin:$PATH"
+# Global CLIs (pi, netlify, vercel, stripe, figma, mmdc, qmd, ccstatusline)
+# live in this runtime's npm prefix. Appended, not prepended, so the Vite+
+# node/npm/npx shims win and projects get their pinned Node version.
+export PATH="$PATH:$HOME/.vite-plus/js_runtime/node/24.19.0/bin"
 
 # >>> railway initialize >>>
 source "$HOME/.railway/env"
@@ -301,3 +303,7 @@ if [ -f "$HOME/.config/op/uxlab-agent.env" ]; then
   . "$HOME/.config/op/uxlab-agent.env"
   export OP_SERVICE_ACCOUNT_TOKEN
 fi
+
+
+# Herd injected PHP 8.6 configuration.
+export HERD_PHP_86_INI_SCAN_DIR="/Users/victortolbert/Library/Application Support/Herd/config/php/86"
