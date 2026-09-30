@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+#
+# gh-visibility-sweep — shrink a GitHub public footprint from a manifest.
+#
+# Over the years ~160 repos went public by default: scaffolds, course
+# exercises, forks of Vite and Nuxt, and at least one repo with other people's
+# phone numbers in its test data. Going through them one at a time never
+# happens, so the decision lives in a manifest and this script carries it out.
+#
+# Manifest (TSV, `#` lines ignored): repo  action  [anything else is ignored]
+#
+#   keep         leave alone
+#   private      make private, then archive (read-only; signals "not maintained")
+#   delete-fork  delete, but ONLY if no branch has commits upstream lacks.
+#                Forks of public repos cannot be made private, so the choice
+#                is delete or leave public. Anything with work of its own is
+#                held and reported instead.
+#   delete-fork-reviewed
+#                delete a fork you have looked at and decided its own commits
+#                (typo PRs, tutorial steps) are not worth keeping
+#
+# Dry run is the default. Nothing changes without --apply.
+#
+# Before touching a repo, --apply appends its current state (visibility,
+# archived, description, homepage, stars) to state-<timestamp>.jsonl next to
+# the manifest, so a private/archive can be undone by hand. Deleted forks can
+# be restored from github.com/settings/repositories for 90 days.
+#
+# Usage:
+#   gh-visibility-sweep MANIFEST [--apply] [--only OWNER] [--action ACTION]
+#
+#   --only OWNER      restrict to one owner, to work in batches
+#   --action ACTION   restrict to one action (private | delete-fork | delete-fork-reviewed)
+#
+# Needs: gh (authenticated), jq. Deleting needs the delete_repo scope:
+#   gh auth refresh -h github.com -s delete_repo
+
+set -euo pipefail
+
+usage() { sed -n '/^# Usage:/,/^# Needs:/p' "$0" | sed 's/^# \{0,1\}//' | sed '$d'; exit "${1:-0}"; }
+
+manifest="" apply=0 only="" only_action=""
+while (($#)); do
+  case $1 in
+    --apply)  apply=1 ;;
+    --only)   only=${2:?--only needs an owner}; shift ;;
+    --action) only_action=${2:?--action needs a value}; shift ;;
+    -h|--help) usage ;;
+    -*) echo "unknown flag: $1" >&2; usage 1 ;;
+    *)  manifest=$1 ;;
+  esac
+  shift
+done
+[[ -n $manifest && -f $manifest ]] || usage 1
+
+for bin in gh jq; do command -v "$bin" >/dev/null || { echo "missing: $bin" >&2; exit 1; }; done
+
+stamp=$(date +%Y%m%d-%H%M%S)
+dir=$(cd "$(dirname "$manifest")" && pwd)
+state="$dir/state-$stamp.jsonl"
+report="$dir/$([[ $apply == 1 ]] && echo apply || echo dry-run)-$stamp.tsv"
+
+can_delete=0
+gh auth status 2>&1 | grep -q "delete_repo" && can_delete=1
+
+# Returns "clean", or "hold: <reason>". A fork is clean when no branch has a
+# commit authored by this account. One GraphQL call per fork; comparing each
+# branch against upstream instead took minutes on forks of busy projects.
+#
+# Deliberately conservative: a merged upstream PR also counts as "mine" and
+# holds the fork, and anything the query can't answer holds it too.
+# Commits under an email not linked to the account are missed.
+viewer_id=$(gh api user --jq .node_id)
+fork_query='query($o:String!,$n:String!,$u:ID!){repository(owner:$o,name:$n){
+  refs(refPrefix:"refs/heads/",first:100){totalCount nodes{name
+    target{... on Commit{history(first:1,author:{id:$u}){totalCount}}}}}}}'
+fork_verdict() {
+  local repo=$1 out
+  out=$(gh api graphql -f query="$fork_query" -F o="${repo%%/*}" -F n="${repo#*/}" -F u="$viewer_id" \
+    --jq '.data.repository.refs | if .totalCount > 100 then "hold: \(.totalCount) branches, check by hand"
+      else [.nodes[] | select(.target.history.totalCount > 0) | "\(.name)(\(.target.history.totalCount)+)"]
+        | if length > 0 then "hold: your commits on \(join(" "))" else "clean" end end' 2>/dev/null) \
+    || out="hold: query failed (big repo?), check by hand"
+  echo "$out"
+}
+
+snapshot() {
+  gh api "repos/$1" --jq '{full_name, visibility, archived, description, homepage,
+    stargazers_count, forks_count, fork, saved_at: (now|todate)}' | jq -c . >>"$state"
+}
+
+printf 'repo\taction\tresult\tdetail\n' >"$report"
+log() { printf '%s\t%s\t%s\t%s\n' "$@" >>"$report"; printf '%-50s %-12s %-5s %s\n' "$@"; }
+
+while IFS=$'\t' read -r repo action _; do
+  [[ -z $repo || $repo == \#* ]] && continue
+  [[ -n $only && ${repo%%/*} != "$only" ]] && continue
+  [[ -n $only_action && $action != "$only_action" ]] && continue
+  [[ $action == keep ]] && { printf "%s\tkeep\tkeep\t\n" "$repo" >>"$report"; continue; }
+
+  live=$(gh api "repos/$repo" --jq '"\(.visibility) \(.archived) \(.fork)"' 2>/dev/null) \
+    || { log "$repo" "$action" "skip" "not found (renamed or already deleted?)"; continue; }
+  read -r visibility archived fork <<<"$live"
+
+  case $action in
+    private)
+      if [[ $visibility != public ]]; then
+        result=skip detail="already $visibility"
+      elif [[ $fork == true ]]; then
+        result=skip detail="is a fork; forks cannot go private — use delete-fork"
+      elif ((apply)); then
+        snapshot "$repo"
+        [[ $archived == true ]] && gh api -X PATCH "repos/$repo" -F archived=false >/dev/null
+        gh repo edit "$repo" --visibility private --accept-visibility-change-consequences >/dev/null
+        gh repo archive "$repo" --yes >/dev/null
+        result=done detail="private + archived"
+      else
+        result=would detail="make private + archive"; [[ $archived == true ]] && detail+=" (unarchive first)"
+      fi ;;
+    delete-fork|delete-fork-reviewed)
+      if [[ $fork != true ]]; then
+        result=skip detail="not a fork; refusing to delete source repos"
+      else
+        if [[ $action == delete-fork-reviewed ]]; then verdict=clean; else verdict=$(fork_verdict "$repo"); fi
+        if [[ $verdict != clean ]]; then
+          result=hold detail=$verdict
+        elif ((apply && !can_delete)); then
+          result=skip detail="clean, but token lacks delete_repo scope"
+        elif ((apply)); then
+          snapshot "$repo"
+          gh repo delete "$repo" --yes >/dev/null
+          result=done detail="deleted (restorable 90 days)"
+        else
+          result=would detail="delete — no commits of its own"
+        fi
+      fi ;;
+    *) result=skip detail="unknown action '$action'" ;;
+  esac
+  log "$repo" "$action" "$result" "$detail"
+done <"$manifest"
+
+echo
+tail -n +2 "$report" | cut -f3 | sort | uniq -c | awk "{printf \"%s=%s  \", \$2, \$1}"; echo
+echo "report: $report"
+((apply)) && [[ -f $state ]] && echo "prior state: $state"
+((apply || can_delete)) || echo "note: token lacks delete_repo; run 'gh auth refresh -h github.com -s delete_repo' before --apply"
