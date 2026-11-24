@@ -201,7 +201,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # jenv — per-directory Java version switching (reads .java-version files)
 export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+command -v jenv >/dev/null && eval "$(jenv init -)"
 
 # Vite+ bin (https://viteplus.dev)
 [[ -f "$HOME/.vite-plus/env" ]] && source "$HOME/.vite-plus/env"
@@ -250,7 +250,7 @@ fpath=($HOME/.docker/completions $fpath)
 
 # eval "$(rbenv init - zsh)"
 eval "$(mise activate zsh)"
-eval "$(try init)"
+command -v try >/dev/null && eval "$(try init)"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/victortolbert/.lmstudio/bin"
@@ -279,7 +279,7 @@ export PATH="/Users/victortolbert/Library/Application Support/Herd/bin/":$PATH
 export PATH="$PATH:$HOME/.vite-plus/js_runtime/node/24.19.0/bin"
 
 # >>> railway initialize >>>
-source "$HOME/.railway/env"
+[[ -f "$HOME/.railway/env" ]] && source "$HOME/.railway/env"
 # <<< railway initialize <<<
 
 # The next line updates PATH for the Google Cloud SDK.

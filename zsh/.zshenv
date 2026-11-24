@@ -21,4 +21,4 @@ if [[ "$(hostname -s)" == "milton" ]]; then
 fi
 
 # Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
+[[ -f "$HOME/.vite-plus/env" ]] && . "$HOME/.vite-plus/env"
