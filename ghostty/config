@@ -51,7 +51,7 @@ scrollback-limit = 25000
 
 # ─── Shell Integration ───────────────────────────────────────
 shell-integration = zsh
-shell-integration-features = cursor,sudo,title
+shell-integration-features = cursor,sudo,title,ssh-terminfo
 
 # ─── Keybindings ─────────────────────────────────────────────
 # Splits
