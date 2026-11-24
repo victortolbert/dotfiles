@@ -274,9 +274,15 @@ setopt SHARE_HISTORY
 export PATH="/Users/victortolbert/Library/Application Support/Herd/bin/":$PATH
 
 # Global CLIs (pi, netlify, vercel, stripe, figma, mmdc, qmd, ccstatusline)
-# live in this runtime's npm prefix. Appended, not prepended, so the Vite+
+# live in the default runtime's npm prefix. Appended, not prepended, so the Vite+
 # node/npm/npx shims win and projects get their pinned Node version.
-export PATH="$PATH:$HOME/.vite-plus/js_runtime/node/24.19.0/bin"
+# The version comes from Vite+'s own config, so `vp env default` upgrades
+# don't strand them (it used to be hardcoded and went stale on every upgrade).
+if [[ -f "$HOME/.vite-plus/config.json" &&
+      "$(<$HOME/.vite-plus/config.json)" =~ '"defaultNodeVersion": *"([0-9.]+)"' &&
+      -d "$HOME/.vite-plus/js_runtime/node/$match[1]/bin" ]]; then
+  path+=("$HOME/.vite-plus/js_runtime/node/$match[1]/bin")
+fi
 
 # >>> railway initialize >>>
 [[ -f "$HOME/.railway/env" ]] && source "$HOME/.railway/env"
