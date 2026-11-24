@@ -88,16 +88,25 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint      -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2     -bool true
 
 # -----------------------------------------------------------------------------
-# Menu bar clock — show date + time with seconds
+# Menu bar clock — show day, date + time with seconds
 # -----------------------------------------------------------------------------
-defaults write com.apple.menuextra.clock DateFormat -string "EEE MMM d  h:mm:ss a"
+# (DateFormat is ignored since macOS 11; these are the current keys)
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true
+defaults write com.apple.menuextra.clock ShowDate      -int 1      # 0 = when space allows, 1 = always, 2 = never
+defaults write com.apple.menuextra.clock ShowSeconds   -bool true
+defaults write com.apple.menuextra.clock Show24Hour    -bool false
 
 # -----------------------------------------------------------------------------
 # Safari developer tools (harmless if Safari is unused)
 # -----------------------------------------------------------------------------
-defaults write com.apple.Safari IncludeDevelopMenu                                  -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey           -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+# Safari's prefs live in a sandbox container that the terminal can only write
+# with Full Disk Access. Don't abort the script without it; use Safari →
+# Settings → Advanced → "Show features for web developers" instead.
+safari_failed=0
+defaults write com.apple.Safari IncludeDevelopMenu                                  -bool true 2>/dev/null || safari_failed=1
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey           -bool true 2>/dev/null || safari_failed=1
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true 2>/dev/null || safari_failed=1
+[ "$safari_failed" -eq 1 ] && echo "  SKIP: Safari developer settings (terminal lacks Full Disk Access)"
 
 # -----------------------------------------------------------------------------
 # Xcode-style key bindings in macOS text fields (optional)
