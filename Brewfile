@@ -35,7 +35,6 @@ cask "font-jetbrains-mono-nerd-font"
 ################
 brew "node"
 brew "pnpm"
-brew "nvm"
 brew "deno"
 brew "oven-sh/bun/bun"
 brew "jenv"
@@ -43,7 +42,7 @@ brew "jenv"
 brew "dotnet"
 brew "python"
 
-cask "docker"
+cask "docker-desktop"
 
 ###################
 # PRODUCTIVITY    #
@@ -52,7 +51,7 @@ cask "raycast"
 cask "rectangle"
 cask "1password"
 cask "1password-cli"
-cask "tailscale"
+cask "tailscale-app"
 cask "obsidian"
 
 ###################

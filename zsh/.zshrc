@@ -115,7 +115,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH=$HOME/.composer/vendor/bin:$PATH
-export PATH=$HOME/.dotnet/tools:$PATH
+[[ -d "$HOME/.dotnet/tools" ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
@@ -190,7 +190,7 @@ export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/p
 # and needs no change to this file.
 [[ -f "$HOME/.zsh_secrets" ]] && source "$HOME/.zsh_secrets"
 
-export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
+[[ -d /opt/homebrew/opt/dotnet@8/bin ]] && export PATH="/opt/homebrew/opt/dotnet@8/bin:$PATH"
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
@@ -200,7 +200,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # jenv — per-directory Java version switching (reads .java-version files)
-export PATH="$HOME/.jenv/bin:$PATH"
+[[ -d "$HOME/.jenv/bin" ]] && export PATH="$HOME/.jenv/bin:$PATH"
 command -v jenv >/dev/null && eval "$(jenv init -)"
 
 # Vite+ bin (https://viteplus.dev)
@@ -290,14 +290,14 @@ if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
 # Added by Antigravity IDE
-export PATH="/Users/victortolbert/.antigravity-ide/antigravity-ide/bin:$PATH"
+[[ -d "$HOME/.antigravity-ide/antigravity-ide/bin" ]] && export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 
 # Added by Antigravity CLI installer
 export PATH="/Users/victortolbert/.local/bin:$PATH"
 
 # Turso
-export PATH="$PATH:/Users/victortolbert/.turso"
+[[ -d "$HOME/.turso" ]] && export PATH="$PATH:$HOME/.turso"
 
 # uxlab — 1Password service account (unattended agent runs)
 if [ -f "$HOME/.config/op/uxlab-agent.env" ]; then
