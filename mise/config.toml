@@ -3,7 +3,7 @@
 idiomatic_version_file_enable_tools = ["java"]
 
 [tools]
-java = "temurin-21"
+java = "temurin-25"
 ruby = "3.3"
 
 # Ruby gem CLIs: each gets its own isolated GEM_HOME, so it keeps working
