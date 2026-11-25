@@ -566,6 +566,8 @@ alias uvt='uv run -p ~/.codex/venvs/tools'
 # ===========================================
 # yt-dlp / ffmpeg
 # ===========================================
+# youtube-dl is unmaintained; yt-dlp is the drop-in replacement
+alias youtube-dl='yt-dlp'
 # Best audio as mp3:  yta URL
 alias yta='yt-dlp -x --audio-format mp3 --audio-quality 0 -o "%(title)s.%(ext)s"'
 # Best audio as wav:  ytw URL
