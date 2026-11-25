@@ -37,7 +37,6 @@ brew "node"
 brew "pnpm"
 brew "deno"
 brew "oven-sh/bun/bun"
-brew "jenv"
 
 brew "dotnet"
 brew "python"

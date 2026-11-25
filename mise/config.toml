@@ -1,3 +1,7 @@
+[settings]
+# Honor per-project .java-version files (what jenv used to do).
+idiomatic_version_file_enable_tools = ["java"]
+
 [tools]
 java = "21"
 ruby = "3.3.6"

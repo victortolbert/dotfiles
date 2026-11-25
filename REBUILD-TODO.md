@@ -21,7 +21,7 @@ Line numbers are current as of this audit.
 | Line | Path | What owns it | Verdict |
 |---|---|---|---|
 | 243 | `~/.bin` | — | ❌ **Remove.** `install.sh` links `bin/*` into `~/.local/bin`, not `~/.bin`. Nothing populates this. Vestigial. |
-| 203–204 | `~/.jenv/bin` + `eval "$(jenv init -)"` | jenv | ⚠️ **Probably remove.** jenv is installed via Homebrew (so the `eval` works), but **mise already manages Java 21** per `mise/config.toml`. Two version managers on the same runtime is a conflict waiting to happen. Pick mise. |
+| 203–204 | `~/.jenv/bin` + `eval "$(jenv init -)"` | jenv | ✅ **Removed 2026-11-25.** mise manages Java (`mise/config.toml`) and now honors `.java-version` files via `idiomatic_version_file_enable_tools`. On each machine: `brew uninstall jenv` and delete `~/.jenv`. |
 | 193 | `/opt/homebrew/opt/dotnet@8/bin` | .NET 8 | 🔁 **Reinstall or remove.** Not installed. `brew install dotnet@8` if you still need it. |
 | 118 | `~/.dotnet/tools` | .NET global tools | 🔁 Same call as above — pairs with `dotnet@8`. |
 | 117 | `~/.composer/vendor/bin` | Composer globals | 🔁 **Likely reinstall.** Herd is installed and on PATH, so PHP work is live; the Composer global bin dir just hasn't been recreated. |

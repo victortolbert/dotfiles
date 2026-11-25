@@ -199,10 +199,6 @@ export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/p
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# jenv — per-directory Java version switching (reads .java-version files)
-[[ -d "$HOME/.jenv/bin" ]] && export PATH="$HOME/.jenv/bin:$PATH"
-command -v jenv >/dev/null && eval "$(jenv init -)"
-
 # Vite+ bin (https://viteplus.dev)
 [[ -f "$HOME/.vite-plus/env" ]] && source "$HOME/.vite-plus/env"
 
