@@ -1,3 +1,9 @@
 [tools]
 java = "21"
 ruby = "3.3.6"
+
+# Ruby gem CLIs: each gets its own isolated GEM_HOME, so it keeps working
+# whichever Ruby is active (unlike `gem install`, tied to one Ruby's gems).
+# Replaces the deprecated ~/.default-gems file. If the Ruby it was built
+# with is ever removed, rebuild with: mise install --force gem:doing
+"gem:doing" = "latest"
