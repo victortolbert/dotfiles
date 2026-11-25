@@ -119,10 +119,16 @@ export PATH=$HOME/.composer/vendor/bin:$PATH
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+# Newer pnpm (12 here) puts global bins in $PNPM_HOME/bin and refuses
+# `pnpm add -g` if that isn't on PATH; older pnpm used $PNPM_HOME itself. Keep both so every
+# machine works whichever pnpm it has. bin is added last so it ends up first.
+for _pnpm_dir in "$PNPM_HOME" "$PNPM_HOME/bin"; do
+  case ":$PATH:" in
+    *":$_pnpm_dir:"*) ;;
+    *) export PATH="$_pnpm_dir:$PATH" ;;
+  esac
+done
+unset _pnpm_dir
 # pnpm end
 
 # Node versions are managed by Vite+ (sourced from .zshenv and again below).
