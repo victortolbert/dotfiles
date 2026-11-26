@@ -87,6 +87,14 @@ source $ZSH/oh-my-zsh.sh
 # Loaded early so OP_SERVICE_ACCOUNT_TOKEN is available for `op read` calls below
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
+# 1Password service account: fall back to the macOS Keychain when .zshrc.local
+# doesn't set it. Store with:
+#   security add-generic-password -a "$USER" -s op-service-account -w
+if [[ -z "$OP_SERVICE_ACCOUNT_TOKEN" && "$OSTYPE" == darwin* ]]; then
+  OP_SERVICE_ACCOUNT_TOKEN="$(security find-generic-password -a "$USER" -s op-service-account -w 2>/dev/null)"
+  [[ -n "$OP_SERVICE_ACCOUNT_TOKEN" ]] && export OP_SERVICE_ACCOUNT_TOKEN || unset OP_SERVICE_ACCOUNT_TOKEN
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
